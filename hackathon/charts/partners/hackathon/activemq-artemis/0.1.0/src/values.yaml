@@ -1,0 +1,7 @@
+# Default values for activemq-artemis
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+broker:
+  # Name of the ActiveMQ Artemis broker instance
+  name: artemis-broker

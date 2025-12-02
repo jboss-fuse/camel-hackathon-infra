@@ -1,0 +1,26 @@
+apiVersion: tempo.grafana.com/v1alpha1
+kind: TempoMonolithic
+metadata:
+  name: monolitic
+spec:
+  ingestion:
+    otlp:
+      grpc:
+        enabled: true
+      http:
+        enabled: true
+  multitenancy:
+    authentication:
+      - tenantId: application
+        tenantName: application
+    enabled: true
+    mode: openshift
+  jaegerui:
+    enabled: false
+  resources:
+    limits:
+      cpu: '2'
+      memory: 2Gi
+  storage:
+    traces:
+      backend: memory
