@@ -1,0 +1,59 @@
+apiVersion: v1
+entries:
+  activemq-artemis:
+  - apiVersion: v2
+    appVersion: "1.0"
+    created: "2025-12-02T14:04:01.100823669+01:00"
+    description: A Helm chart for ActiveMQ Artemis Broker on OpenShift
+    digest: 6229dece758e7a5936a822679c8be796ae906f38df6ffab344b6bdc590f48f80
+    keywords:
+    - activemq
+    - artemis
+    - messaging
+    - broker
+    maintainers:
+    - name: Hackathon Team
+    name: activemq-artemis
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/activemq-artemis-0.1.0.tgz
+    version: 0.1.0
+  postgres-cluster:
+  - apiVersion: v2
+    appVersion: "17"
+    created: "2025-12-02T14:04:01.100967559+01:00"
+    description: A Helm chart for PostgreSQL Cluster using Crunchy Data Operator on
+      OpenShift
+    digest: 669f4ceddc35c49b3aeb37a8f8c9dc2696f24928f168e7c75f99939c28989b92
+    keywords:
+    - postgresql
+    - postgres
+    - database
+    - crunchy
+    maintainers:
+    - name: Hackathon Team
+    name: postgres-cluster
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/postgres-cluster-0.1.0.tgz
+    version: 0.1.0
+  tempo-monolithic:
+  - apiVersion: v2
+    appVersion: "1.0"
+    created: "2025-12-02T14:04:01.101367569+01:00"
+    description: A Helm chart for Grafana Tempo Monolithic on OpenShift
+    digest: c640370646065446fc186de6ff5ebe79d5ae7e2da35a44eb52ffee2d25766252
+    keywords:
+    - tempo
+    - grafana
+    - observability
+    - tracing
+    - opentelemetry
+    maintainers:
+    - name: Hackathon Team
+    name: tempo-monolithic
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/tempo-monolithic-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-12-02T14:04:01.100554655+01:00"

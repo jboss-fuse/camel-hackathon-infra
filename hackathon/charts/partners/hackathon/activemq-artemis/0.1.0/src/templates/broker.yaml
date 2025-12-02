@@ -1,0 +1,4 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemis
+metadata:
+  name: {{ .Values.broker.name | default "artemis-broker" }}

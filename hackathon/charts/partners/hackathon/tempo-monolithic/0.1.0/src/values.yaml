@@ -1,0 +1,7 @@
+# Default values for tempo-monolithic
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+tempo:
+  # Name of the Tempo Monolithic instance
+  name: monolitic
