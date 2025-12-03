@@ -1,0 +1,63 @@
+# Default values for opentelemetry-infra
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+tempo:
+  # Name of the Tempo Monolithic instance
+  name: monolitic
+
+serviceAccount:
+  # Name of the ServiceAccount for OTel Collector
+  name: otel-collector-sa
+
+clusterRole:
+  reader:
+    # ClusterRole name for reading traces
+    name: tempo-traces-reader
+  writer:
+    # ClusterRole name for writing traces
+    name: tempo-traces-write
+
+clusterRoleBinding:
+  reader:
+    # ClusterRoleBinding name for trace readers
+    name: tempo-traces-reader
+  writer:
+    # ClusterRoleBinding name for OTel to write traces
+    name: tempo-traces-from-otel
+
+otelCollector:
+  # Name of the OpenTelemetry Collector
+  name: otel-collector
+  # Tenant ID for multi-tenancy
+  tenantId: application
+  # Metric expiration time
+  metricExpiration: 180m
+
+instrumentation:
+  # Name of the Instrumentation resource
+  name: camel-instrumentation
+  # Java auto-instrumentation image
+  javaImage: ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:2.22.0
+  # Sampling strategy
+  sampler: always_on
+  # Logs exporter
+  logsExporter: none
+  # JMX target system
+  jmxTargetSystem: camel
+  # Instrumentation toggles
+  apacheHttpClientEnabled: false
+  undertowEnabled: false
+  servletEnabled: false
+
+serviceMonitor:
+  # Name of the ServiceMonitor
+  name: otel-collector-sm
+  # Scrape interval
+  interval: 30s
+
+postInstall:
+  # Job name for post-install hook
+  jobName: otel-post-install
+  # Container image for the post-install job
+  image: registry.redhat.io/openshift4/ose-cli:latest

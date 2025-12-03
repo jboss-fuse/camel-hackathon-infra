@@ -1,6 +1,6 @@
 apiVersion: v2
-name: tempo-monolithic
-description: A Helm chart for Grafana Tempo Monolithic on OpenShift
+name: opentelemetry-infra
+description: A Helm chart for OpenTelemetry stack on OpenShift
 type: application
 version: 0.1.0
 appVersion: "1.0"
@@ -10,5 +10,6 @@ keywords:
   - observability
   - tracing
   - opentelemetry
+  - metrics
 maintainers:
   - name: Hackathon Team

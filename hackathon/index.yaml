@@ -3,9 +3,9 @@ entries:
   activemq-artemis:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-02T14:04:01.100823669+01:00"
+    created: "2025-12-03T09:21:02.327937836+01:00"
     description: A Helm chart for ActiveMQ Artemis Broker on OpenShift
-    digest: 6229dece758e7a5936a822679c8be796ae906f38df6ffab344b6bdc590f48f80
+    digest: bdb11acada9925f2b72b60bb1f49702a871b89eb65796784b52ae22f445f411a
     keywords:
     - activemq
     - artemis
@@ -18,13 +18,33 @@ entries:
     urls:
     - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/activemq-artemis-0.1.0.tgz
     version: 0.1.0
+  opentelemetry-infra:
+  - apiVersion: v2
+    appVersion: "1.0"
+    created: "2025-12-03T09:21:02.360006651+01:00"
+    description: A Helm chart for OpenTelemetry stack on OpenShift
+    digest: 823cc169f9eedc6629bcb53ac423399c943f0a070d26763699abeb13f5819be1
+    keywords:
+    - tempo
+    - grafana
+    - observability
+    - tracing
+    - opentelemetry
+    - metrics
+    maintainers:
+    - name: Hackathon Team
+    name: opentelemetry-infra
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/opentelemetry-infra-0.1.0.tgz
+    version: 0.1.0
   postgres-cluster:
   - apiVersion: v2
     appVersion: "17"
-    created: "2025-12-02T14:04:01.100967559+01:00"
+    created: "2025-12-03T09:21:02.360809478+01:00"
     description: A Helm chart for PostgreSQL Cluster using Crunchy Data Operator on
       OpenShift
-    digest: 669f4ceddc35c49b3aeb37a8f8c9dc2696f24928f168e7c75f99939c28989b92
+    digest: 08ed831561fe782e6b5b2ff738ec53ff24c7a9530c0817771937b7a2fd68566d
     keywords:
     - postgresql
     - postgres
@@ -37,23 +57,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/postgres-cluster-0.1.0.tgz
     version: 0.1.0
-  tempo-monolithic:
-  - apiVersion: v2
-    appVersion: "1.0"
-    created: "2025-12-02T14:04:01.101367569+01:00"
-    description: A Helm chart for Grafana Tempo Monolithic on OpenShift
-    digest: c640370646065446fc186de6ff5ebe79d5ae7e2da35a44eb52ffee2d25766252
-    keywords:
-    - tempo
-    - grafana
-    - observability
-    - tracing
-    - opentelemetry
-    maintainers:
-    - name: Hackathon Team
-    name: tempo-monolithic
-    type: application
-    urls:
-    - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/tempo-monolithic-0.1.0.tgz
-    version: 0.1.0
-generated: "2025-12-02T14:04:01.100554655+01:00"
+generated: "2025-12-03T09:21:02.327735015+01:00"

@@ -1,0 +1,61 @@
+kind: OpenTelemetryCollector
+apiVersion: opentelemetry.io/v1beta1
+metadata:
+  name: {{ .Values.otelCollector.name | default "otel-collector" }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "3"
+spec:
+  serviceAccount: {{ .Values.serviceAccount.name | default "otel-collector-sa" }}
+  config:
+    extensions:
+      bearertokenauth:
+        filename: /var/run/secrets/kubernetes.io/serviceaccount/token
+    exporters:
+      debug: {}
+      otlp/tempo:
+        auth:
+          authenticator: bearertokenauth
+        endpoint: {{ printf "tempo-%s-gateway:4317" (.Values.tempo.name | default "monolitic") | quote }}
+        headers:
+          X-Scope-OrgID: {{ .Values.otelCollector.tenantId | default "application" }}
+        tls:
+          insecure_skip_verify: true
+      prometheus:
+        endpoint: '0.0.0.0:8889'
+        metric_expiration: {{ .Values.otelCollector.metricExpiration | default "180m" }}
+    processors:
+      batch:
+        send_batch_size: 500
+        timeout: 10s
+    receivers:
+      otlp:
+        protocols:
+          grpc: {}
+          http: {}
+    service:
+      extensions:
+        - bearertokenauth
+      pipelines:
+        traces:
+          exporters:
+            - debug
+            - otlp/tempo
+          processors:
+            - batch
+          receivers:
+            - otlp
+        metrics:
+          exporters:
+            - debug
+            - prometheus
+          processors:
+            - batch
+          receivers:
+            - otlp
+  replicas: 1
+  ports:
+    - name: promexporter
+      port: 8889
+      protocol: TCP
+      targetPort: 8889
