@@ -1,0 +1,95 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qdrant
+  labels:
+    app: qdrant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qdrant
+  template:
+    metadata:
+      labels:
+        app: qdrant
+    spec:
+      containers:
+      - name: qdrant
+        image: qdrant/qdrant:v1.15.1-unprivileged
+        workingDir: /qdrant
+        ports:
+        - containerPort: 6333
+          name: http
+          protocol: TCP
+        - containerPort: 6334
+          name: grpc
+          protocol: TCP
+        resources:
+          limits:
+            memory: 2Gi
+            cpu: 1000m
+          requests:
+            memory: 512Mi
+            cpu: 250m
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 6333
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 6333
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+        volumeMounts:
+        - name: qdrant-storage
+          mountPath: /qdrant/storage
+        - name: qdrant-snapshots
+          mountPath: /qdrant/snapshots
+      volumes:
+      - name: qdrant-storage
+        emptyDir: {}
+      - name: qdrant-snapshots
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: qdrant
+  labels:
+    app: qdrant
+spec:
+  type: ClusterIP
+  ports:
+  - port: 6333
+    targetPort: 6333
+    protocol: TCP
+    name: http
+  - port: 6334
+    targetPort: 6334
+    protocol: TCP
+    name: grpc
+  selector:
+    app: qdrant
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: qdrant
+  labels:
+    app: qdrant
+spec:
+  to:
+    kind: Service
+    name: qdrant
+  port:
+    targetPort: http
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect

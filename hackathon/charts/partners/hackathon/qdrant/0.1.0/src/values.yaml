@@ -1,0 +1,13 @@
+qdrant:
+  name: qdrant
+  image: qdrant/qdrant:v1.15.1-unprivileged
+  replicas: 1
+  port: 6333
+  grpcPort: 6334
+  resources:
+    limits:
+      memory: 2Gi
+      cpu: 1000m
+    requests:
+      memory: 512Mi
+      cpu: 250m

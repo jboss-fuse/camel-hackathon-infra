@@ -3,7 +3,7 @@ entries:
   activemq-artemis:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-03T14:13:30.941762+01:00"
+    created: "2025-12-03T14:52:59.815037+01:00"
     description: A Helm chart for ActiveMQ Artemis Broker on OpenShift
     digest: a8d3d090342834ea60848716daaf1102f2ce5aa283a64e32efd2b47cf48a30cd
     keywords:
@@ -45,7 +45,7 @@ entries:
   fhir:
   - apiVersion: v2
     appVersion: 8.2.0
-    created: "2025-12-03T14:13:30.942591+01:00"
+    created: "2025-12-03T14:52:59.815729+01:00"
     description: A Helm chart for HAPI FHIR Server on OpenShift
     digest: e80a7e28c566a33a5c746804e77a7cc53d7bf55eb903dffd6e574a49d7ce3c5b
     keywords:
@@ -63,7 +63,7 @@ entries:
   ftp:
   - apiVersion: v2
     appVersion: latest
-    created: "2025-12-03T14:13:30.942955+01:00"
+    created: "2025-12-03T14:52:59.816055+01:00"
     description: A Helm chart for Apache FTP Server on OpenShift
     digest: 23472da73cdba36824e96cfd46b22f088434b821cc1eccc27eefc59211af2052
     keywords:
@@ -103,7 +103,7 @@ entries:
   opentelemetry-infra:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-03T14:13:30.943691+01:00"
+    created: "2025-12-03T14:52:59.81649+01:00"
     description: A Helm chart for OpenTelemetry stack on OpenShift
     digest: 3831613d0931c4803097d6c4e5b6067d376ab2e59512773996e20906577b2e7f
     keywords:
@@ -123,7 +123,7 @@ entries:
   postgres-cluster:
   - apiVersion: v2
     appVersion: "17"
-    created: "2025-12-03T14:13:30.943965+01:00"
+    created: "2025-12-03T14:52:59.816762+01:00"
     description: A Helm chart for PostgreSQL Cluster using Crunchy Data Operator on
       OpenShift
     digest: c019d7fd7903c1eab3d8cbf7fef0cf30291164a45490e0e62cd2973bfb208bad
@@ -139,10 +139,31 @@ entries:
     urls:
     - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/postgres-cluster-0.1.0.tgz
     version: 0.1.0
+  qdrant:
+  - apiVersion: v2
+    appVersion: 1.15.1
+    created: "2025-12-03T14:52:59.817066+01:00"
+    description: A Helm chart for deploying Qdrant vector database on OpenShift
+    digest: 7e9d930d9191a1e5d53cd20a75f8b7f328ec695e603aa54cb92a0f8b832ee6d2
+    home: https://qdrant.tech/
+    keywords:
+    - qdrant
+    - vector-database
+    - similarity-search
+    - machine-learning
+    maintainers:
+    - name: Hackathon Team
+    name: qdrant
+    sources:
+    - https://github.com/qdrant/qdrant
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/qdrant-0.1.0.tgz
+    version: 0.1.0
   quarkus-cxf-server:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-03T14:13:30.944303+01:00"
+    created: "2025-12-03T14:52:59.817337+01:00"
     description: A Helm chart for Quarkus CXF SOAP Server on OpenShift
     digest: ea1d0c373fd67e412170e8d5854b38f7c86c493ed3fdba8ae07d35f9f4d8bb7d
     keywords:
@@ -161,7 +182,7 @@ entries:
   quarkus-rest-server:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-03T14:13:30.944546+01:00"
+    created: "2025-12-03T14:52:59.81855+01:00"
     description: A Helm chart for Quarkus REST Server on OpenShift
     digest: 04599c4e8e005211c46508d110787de06a2efbbeeeaaddc1e982f2a50f322f2f
     keywords:
@@ -180,7 +201,7 @@ entries:
   strimzi-cluster:
   - apiVersion: v2
     appVersion: 3.9.0
-    created: "2025-12-03T14:13:30.944864+01:00"
+    created: "2025-12-03T14:52:59.818869+01:00"
     description: A Helm chart for Kafka cluster using Strimzi Operator on OpenShift
     digest: 8f556a0d86b22dffbb0e2cb91ab614d034b5765cec1e7cc44af0a8ff73e565e2
     keywords:
@@ -196,4 +217,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/strimzi-cluster-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-03T14:13:30.941235+01:00"
+generated: "2025-12-03T14:52:59.814595+01:00"
