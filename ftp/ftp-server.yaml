@@ -1,0 +1,138 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ftp-server
+  labels:
+    app: ftp-server
+spec:
+  type: ClusterIP
+  ports:
+    - port: 2121
+      targetPort: 2121
+      protocol: TCP
+      name: ftp-0
+    - port: 2122
+      targetPort: 2122
+      protocol: TCP
+      name: ftp-1
+    - port: 2123
+      targetPort: 2123
+      protocol: TCP
+      name: ftp-2
+    - port: 2124
+      targetPort: 2124
+      protocol: TCP
+      name: ftp-3
+    - port: 2125
+      targetPort: 2125
+      protocol: TCP
+      name: ftp-4
+    - port: 2126
+      targetPort: 2126
+      protocol: TCP
+      name: ftp-5
+    - port: 2127
+      targetPort: 2127
+      protocol: TCP
+      name: ftp-6
+    - port: 2128
+      targetPort: 2128
+      protocol: TCP
+      name: ftp-7
+    - port: 2129
+      targetPort: 2129
+      protocol: TCP
+      name: ftp-8
+    - port: 2130
+      targetPort: 2130
+      protocol: TCP
+      name: ftp-9
+  selector:
+    app: ftp-server
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ftp-server
+  labels:
+    app: ftp-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ftp-server
+  template:
+    metadata:
+      labels:
+        app: ftp-server
+    spec:
+      containers:
+        - name: ftp
+          image: quay.io/fuse_qe/apache-ftp:latest
+          ports:
+            - containerPort: 2121
+              protocol: TCP
+              name: ftp-0
+            - containerPort: 2122
+              protocol: TCP
+              name: ftp-1
+            - containerPort: 2123
+              protocol: TCP
+              name: ftp-2
+            - containerPort: 2124
+              protocol: TCP
+              name: ftp-3
+            - containerPort: 2125
+              protocol: TCP
+              name: ftp-4
+            - containerPort: 2126
+              protocol: TCP
+              name: ftp-5
+            - containerPort: 2127
+              protocol: TCP
+              name: ftp-6
+            - containerPort: 2128
+              protocol: TCP
+              name: ftp-7
+            - containerPort: 2129
+              protocol: TCP
+              name: ftp-8
+            - containerPort: 2130
+              protocol: TCP
+              name: ftp-9
+          env:
+            - name: USERS
+              value: "test|test"
+          livenessProbe:
+            tcpSocket:
+              port: 2121
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 2121
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: ftp-server
+  labels:
+    app: ftp-server
+spec:
+  to:
+    kind: Service
+    name: ftp-server
+  port:
+    targetPort: ftp-0
+  tls:
+    termination: passthrough

@@ -5,3 +5,18 @@ metadata:
 spec:
   deployment:
     replicas: {{ .Values.registry.deployment.replicas | default 1 }}
+  configuration:
+    persistence: {{ .Values.registry.configuration.persistence | default "sql" }}
+    {{- if eq (.Values.registry.configuration.persistence | default "sql") "sql" }}
+    sql:
+      dataSource:
+        {{- if .Values.postgresql.enabled }}
+        url: "jdbc:postgresql://{{ index .Values "postgres-cluster" "cluster" "name" }}-primary.{{ .Release.Namespace }}.svc:5432/{{ .Values.registry.configuration.sql.dataSource.database }}"
+        userName: {{ .Values.registry.configuration.sql.dataSource.userName }}
+        password: {{ .Values.registry.configuration.sql.dataSource.password | quote }}
+        {{- else }}
+        url: {{ .Values.registry.configuration.sql.dataSource.url | required "registry.configuration.sql.dataSource.url is required when postgresql.enabled is false" }}
+        userName: {{ .Values.registry.configuration.sql.dataSource.userName | required "registry.configuration.sql.dataSource.userName is required" }}
+        password: {{ .Values.registry.configuration.sql.dataSource.password | required "registry.configuration.sql.dataSource.password is required" | quote }}
+        {{- end }}
+    {{- end }}

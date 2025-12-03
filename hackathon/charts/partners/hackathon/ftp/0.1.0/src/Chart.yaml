@@ -1,0 +1,12 @@
+apiVersion: v2
+name: ftp
+description: A Helm chart for Apache FTP Server on OpenShift
+type: application
+version: 0.1.0
+appVersion: "latest"
+keywords:
+  - ftp
+  - file-transfer
+  - apache-ftp
+maintainers:
+  - name: Hackathon Team
