@@ -1,0 +1,15 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .Values.clusterRoleBinding.writer.name | default "tempo-traces-from-otel" }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "2"
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.serviceAccount.name | default "otel-collector-sa" }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ .Values.clusterRole.writer.name | default "tempo-traces-write" }}

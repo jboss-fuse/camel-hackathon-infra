@@ -1,0 +1,29 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: {{ .Values.instrumentation.name | default "camel-instrumentation" }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "4"
+spec:
+  exporter:
+    endpoint: {{ printf "http://%s-headless:4318" (.Values.otelCollector.name | default "otel-collector") | quote }}
+  java:
+    image: {{ .Values.instrumentation.javaImage | default "ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:2.22.0" | quote }}
+    env:
+      - name: OTEL_SERVICE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: 'metadata.labels[''app'']'
+      - name: OTEL_TRACER_SAMPLER
+        value: {{ .Values.instrumentation.sampler | default "always_on" }}
+      - name: OTEL_LOGS_EXPORTER
+        value: {{ .Values.instrumentation.logsExporter | default "none" }}
+      - name: OTEL_JMX_TARGET_SYSTEM
+        value: {{ .Values.instrumentation.jmxTargetSystem | default "camel" }}
+      - name: OTEL_INSTRUMENTATION_APACHE_HTTPCLIENT_ENABLED
+        value: {{ .Values.instrumentation.apacheHttpClientEnabled | default "false" | quote }}
+      - name: OTEL_INSTRUMENTATION_UNDERTOW_ENABLED
+        value: {{ .Values.instrumentation.undertowEnabled | default "false" | quote }}
+      - name: OTEL_INSTRUMENTATION_SERVLET_ENABLED
+        value: {{ .Values.instrumentation.servletEnabled | default "false" | quote }}

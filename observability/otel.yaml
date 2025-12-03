@@ -1,0 +1,158 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: tempo-traces-reader
+rules:
+  - apiGroups:
+      - 'tempo.grafana.com'
+    resources:
+      - application
+    resourceNames:
+      - traces
+    verbs:
+      - 'get'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: tempo-traces-reader
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: tempo-traces-reader
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: system:authenticated
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: tempo-traces-write
+rules:
+  - apiGroups:
+      - 'tempo.grafana.com'
+    resources:
+      - application
+    resourceNames:
+      - traces
+    verbs:
+      - 'create'
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: otel-collector
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: tempo-traces-from-otel
+subjects:
+  - kind: ServiceAccount
+    name: otel-collector
+    namespace: otel-example
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: tempo-traces-write
+---
+kind: OpenTelemetryCollector
+apiVersion: opentelemetry.io/v1beta1
+metadata:
+  name: otel-collector
+spec:
+  serviceAccount: otel-collector
+  config:
+    extensions:
+      bearertokenauth:
+        filename: /var/run/secrets/kubernetes.io/serviceaccount/token
+    exporters:
+      debug: {}
+      otlp/tempo:
+        auth:
+          authenticator: bearertokenauth
+        endpoint: 'tempo-monolitic-gateway:4317'
+        headers:
+          X-Scope-OrgID: application
+        tls:
+          insecure_skip_verify: true
+      prometheus:
+        endpoint: '0.0.0.0:8889'
+        metric_expiration: 180m
+    processors:
+      batch:
+        send_batch_size: 500
+        timeout: 10s
+    receivers:
+      otlp:
+        protocols:
+          grpc: {}
+          http: {}
+    service:
+      extensions:
+        - bearertokenauth
+      pipelines:
+        traces:
+          exporters:
+            - debug
+            - otlp/tempo
+          processors:
+            - batch
+          receivers:
+            - otlp
+        metrics:
+          exporters:
+            - debug
+            - prometheus
+          processors:
+            - batch
+          receivers:
+            - otlp
+  replicas: 1
+  ports:
+    - name: promexporter
+      port: 8889
+      protocol: TCP
+      targetPort: 8889
+---
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: camel-instrumentation
+spec:
+  exporter:
+    endpoint: 'http://otel-collector-headless:4318'
+  java:
+    image: 'ghcr.io/open-telemetry/opentelemetry-operator/autoinstrumentation-java:2.22.0'
+    env:
+      - name: OTEL_SERVICE_NAME
+        valueFrom:
+          fieldRef:
+            fieldPath: 'metadata.labels[''app'']'
+      - name: OTEL_TRACER_SAMPLER
+        value: always_on
+      - name: OTEL_LOGS_EXPORTER
+        value: none
+      - name: OTEL_JMX_TARGET_SYSTEM
+        value: camel
+      - name: OTEL_INSTRUMENTATION_APACHE_HTTPCLIENT_ENABLED
+        value: 'false'
+      - name: OTEL_INSTRUMENTATION_UNDERTOW_ENABLED
+        value: 'false'
+      - name: OTEL_INSTRUMENTATION_SERVLET_ENABLED
+        value: 'false'
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: otel-collector
+spec:
+  endpoints:
+    - interval: 30s
+      port: promexporter
+      scheme: http
+      path: /metrics
+  selector:
+    matchLabels:
+      app.kubernetes.io/name:  otel-collector

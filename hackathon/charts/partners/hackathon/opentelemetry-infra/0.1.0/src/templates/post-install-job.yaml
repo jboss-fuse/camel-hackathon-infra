@@ -1,0 +1,69 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.postInstall.jobName | default "otel-post-install" }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": hook-succeeded,hook-failed
+spec:
+  template:
+    metadata:
+      name: {{ .Values.postInstall.jobName | default "otel-post-install" }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name | default "otel-collector-sa" }}
+      restartPolicy: Never
+      containers:
+      - name: post-install
+        image: {{ .Values.postInstall.image | default "registry.redhat.io/openshift4/ose-cli:latest" }}
+        command:
+        - /bin/bash
+        - -c
+        - |
+          echo "================================================"
+          echo "OpenTelemetry Infrastructure Post-Install Check"
+          echo "================================================"
+          echo ""
+          echo "Checking deployed resources in namespace: {{ .Release.Namespace }}"
+          echo ""
+
+          # Check Tempo Monolithic
+          echo "1. Tempo Monolithic:"
+          oc get tempomono {{ .Values.tempo.name | default "monolitic" }} -n {{ .Release.Namespace }} 2>/dev/null && echo "   ✓ Tempo instance '{{ .Values.tempo.name | default "monolitic" }}' found" || echo "   ✗ Tempo instance not found"
+
+          # Check ServiceAccount
+          echo ""
+          echo "2. ServiceAccount:"
+          oc get sa {{ .Values.serviceAccount.name | default "otel-collector-sa" }} -n {{ .Release.Namespace }} 2>/dev/null && echo "   ✓ ServiceAccount '{{ .Values.serviceAccount.name | default "otel-collector-sa" }}' found" || echo "   ✗ ServiceAccount not found"
+
+          # Check ClusterRoles
+          echo ""
+          echo "3. ClusterRoles:"
+          oc get clusterrole {{ .Values.clusterRole.reader.name | default "tempo-traces-reader" }} 2>/dev/null && echo "   ✓ ClusterRole '{{ .Values.clusterRole.reader.name | default "tempo-traces-reader" }}' found" || echo "   ✗ ClusterRole (reader) not found"
+          oc get clusterrole {{ .Values.clusterRole.writer.name | default "tempo-traces-write" }} 2>/dev/null && echo "   ✓ ClusterRole '{{ .Values.clusterRole.writer.name | default "tempo-traces-write" }}' found" || echo "   ✗ ClusterRole (writer) not found"
+
+          # Check ClusterRoleBindings
+          echo ""
+          echo "4. ClusterRoleBindings:"
+          oc get clusterrolebinding {{ .Values.clusterRoleBinding.reader.name | default "tempo-traces-reader" }} 2>/dev/null && echo "   ✓ ClusterRoleBinding '{{ .Values.clusterRoleBinding.reader.name | default "tempo-traces-reader" }}' found" || echo "   ✗ ClusterRoleBinding (reader) not found"
+          oc get clusterrolebinding {{ .Values.clusterRoleBinding.writer.name | default "tempo-traces-from-otel" }} 2>/dev/null && echo "   ✓ ClusterRoleBinding '{{ .Values.clusterRoleBinding.writer.name | default "tempo-traces-from-otel" }}' found" || echo "   ✗ ClusterRoleBinding (writer) not found"
+
+          # Check OpenTelemetry Collector
+          echo ""
+          echo "5. OpenTelemetry Collector:"
+          oc get otelcol {{ .Values.otelCollector.name | default "otel-collector" }} -n {{ .Release.Namespace }} 2>/dev/null && echo "   ✓ OpenTelemetryCollector '{{ .Values.otelCollector.name | default "otel-collector" }}' found" || echo "   ✗ OpenTelemetryCollector not found"
+
+          # Check Instrumentation
+          echo ""
+          echo "6. Instrumentation:"
+          oc get instrumentation {{ .Values.instrumentation.name | default "camel-instrumentation" }} -n {{ .Release.Namespace }} 2>/dev/null && echo "   ✓ Instrumentation '{{ .Values.instrumentation.name | default "camel-instrumentation" }}' found" || echo "   ✗ Instrumentation not found"
+
+          # Check ServiceMonitor
+          echo ""
+          echo "7. ServiceMonitor:"
+          oc get servicemonitor {{ .Values.serviceMonitor.name | default "otel-collector-sm" }} -n {{ .Release.Namespace }} 2>/dev/null && echo "   ✓ ServiceMonitor '{{ .Values.serviceMonitor.name | default "otel-collector-sm" }}' found" || echo "   ✗ ServiceMonitor not found"
+
+          echo ""
+          echo "================================================"
+          echo "Post-install verification completed"
+          echo "================================================"
