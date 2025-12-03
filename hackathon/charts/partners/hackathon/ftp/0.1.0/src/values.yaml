@@ -1,0 +1,59 @@
+# Default values for ftp
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+ftp:
+  # Instance name (will be used for deployment, service, and route names)
+  name: "ftp-server"
+
+  # FTP user credentials (format: "username|password")
+  username: "test"
+  password: "test"
+
+  # Resource limits and requests
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
+  # Number of replicas
+  replicas: 1
+
+  # Image configuration
+  image:
+    repository: quay.io/fuse_qe/apache-ftp
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  # Service configuration
+  service:
+    type: ClusterIP
+
+  # FTP ports configuration (passive mode ports range: 2121-2130)
+  ports:
+    control: 2121
+    passiveStart: 2121
+    passiveEnd: 2130
+
+  # Route configuration (OpenShift specific)
+  route:
+    enabled: true
+    tls:
+      enabled: true
+      termination: passthrough
+
+  # Health check configuration
+  livenessProbe:
+    tcpSocket:
+      port: 2121
+    initialDelaySeconds: 30
+    periodSeconds: 10
+
+  readinessProbe:
+    tcpSocket:
+      port: 2121
+    initialDelaySeconds: 10
+    periodSeconds: 5

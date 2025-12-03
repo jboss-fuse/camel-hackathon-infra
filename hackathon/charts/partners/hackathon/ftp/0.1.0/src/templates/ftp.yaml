@@ -1,0 +1,84 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.ftp.name }}
+  labels:
+    app: {{ .Values.ftp.name }}
+spec:
+  type: {{ .Values.ftp.service.type }}
+  ports:
+    {{- range $index, $port := until 10 }}
+    - port: {{ add $.Values.ftp.ports.passiveStart $index }}
+      targetPort: {{ add $.Values.ftp.ports.passiveStart $index }}
+      protocol: TCP
+      name: ftp-{{ $index }}
+    {{- end }}
+  selector:
+    app: {{ .Values.ftp.name }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.ftp.name }}
+  labels:
+    app: {{ .Values.ftp.name }}
+spec:
+  replicas: {{ .Values.ftp.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.ftp.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.ftp.name }}
+    spec:
+      containers:
+        - name: ftp
+          image: "{{ .Values.ftp.image.repository }}:{{ .Values.ftp.image.tag }}"
+          imagePullPolicy: {{ .Values.ftp.image.pullPolicy }}
+          ports:
+            {{- range $index, $port := until 10 }}
+            - containerPort: {{ add $.Values.ftp.ports.passiveStart $index }}
+              protocol: TCP
+              name: ftp-{{ $index }}
+            {{- end }}
+          env:
+            - name: USERS
+              value: "{{ .Values.ftp.username }}|{{ .Values.ftp.password }}"
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.ftp.livenessProbe.tcpSocket.port }}
+            initialDelaySeconds: {{ .Values.ftp.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.ftp.livenessProbe.periodSeconds }}
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.ftp.readinessProbe.tcpSocket.port }}
+            initialDelaySeconds: {{ .Values.ftp.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.ftp.readinessProbe.periodSeconds }}
+          resources:
+            requests:
+              memory: {{ .Values.ftp.resources.requests.memory }}
+              cpu: {{ .Values.ftp.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.ftp.resources.limits.memory }}
+              cpu: {{ .Values.ftp.resources.limits.cpu }}
+{{- if .Values.ftp.route.enabled }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Values.ftp.name }}
+  labels:
+    app: {{ .Values.ftp.name }}
+spec:
+  to:
+    kind: Service
+    name: {{ .Values.ftp.name }}
+  port:
+    targetPort: ftp-0
+  {{- if .Values.ftp.route.tls.enabled }}
+  tls:
+    termination: {{ .Values.ftp.route.tls.termination }}
+  {{- end }}
+{{- end }}

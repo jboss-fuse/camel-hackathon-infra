@@ -1,0 +1,36 @@
+{{- if .Values.postgresql.enabled }}
+Apicurio Registry has been installed with PostgreSQL!
+
+The PostgreSQL cluster "{{ index .Values "postgres-cluster" "cluster" "name" }}" is being deployed.
+
+To get the PostgreSQL password and complete the Apicurio Registry setup:
+
+1. Wait for PostgreSQL to be ready:
+   kubectl wait --for=condition=PostgresClusterInitialized postgrescluster/{{ index .Values "postgres-cluster" "cluster" "name" }} -n {{ .Release.Namespace }} --timeout=300s
+
+2. Get the PostgreSQL password:
+   PG_PASSWORD=$(kubectl get secret {{ index .Values "postgres-cluster" "cluster" "name" }}-pguser-postgres -n {{ .Release.Namespace }} -o jsonpath='{.data.password}' | base64 -d)
+
+3. Update the Apicurio Registry with the password:
+   helm upgrade {{ .Release.Name }} {{ .Chart.Name }} \
+     --reuse-values \
+     --set registry.configuration.sql.dataSource.password="$PG_PASSWORD" \
+     -n {{ .Release.Namespace }}
+
+4. Once updated, check the Apicurio Registry status:
+   kubectl get apicurioregistries {{ .Values.registry.name }} -n {{ .Release.Namespace }}
+
+5. Get the Apicurio Registry URL:
+   kubectl get apicurioregistry {{ .Values.registry.name }} -n {{ .Release.Namespace }} -o jsonpath='{.status.info.host}'
+
+{{- else }}
+Apicurio Registry has been installed!
+
+Make sure you have configured the SQL datasource connection details in values.yaml:
+- registry.configuration.sql.dataSource.url
+- registry.configuration.sql.dataSource.userName
+- registry.configuration.sql.dataSource.password
+
+Check the Apicurio Registry status:
+   kubectl get apicurioregistries {{ .Values.registry.name }} -n {{ .Release.Namespace }}
+{{- end }}

@@ -1,0 +1,16 @@
+# Default values for postgres-cluster
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+cluster:
+  # Name of the PostgreSQL cluster instance
+  name: hippo
+
+# User configuration
+user:
+  # Username for the PostgreSQL database
+  name: "admin"
+  # Password for the PostgreSQL database (if empty, auto-generated)
+  password: ""
+  # Database name
+  database: "test"
