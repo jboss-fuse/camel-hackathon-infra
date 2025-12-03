@@ -3,7 +3,7 @@ entries:
   activemq-artemis:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-03T10:42:47.235652924+01:00"
+    created: "2025-12-03T10:59:40.821438+01:00"
     description: A Helm chart for ActiveMQ Artemis Broker on OpenShift
     digest: b879a970425f506df0dce35912ad1eb9bfa78d890d81e8714fd3e76a9ff75d32
     keywords:
@@ -39,7 +39,7 @@ entries:
   opentelemetry-infra:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-03T10:42:47.239772293+01:00"
+    created: "2025-12-03T10:59:40.82198+01:00"
     description: A Helm chart for OpenTelemetry stack on OpenShift
     digest: 10219ee096d03226735f83053286ff8ed55fa8ec0929bc98a5b1c90544033b80
     keywords:
@@ -59,7 +59,7 @@ entries:
   postgres-cluster:
   - apiVersion: v2
     appVersion: "17"
-    created: "2025-12-03T10:42:47.239915384+01:00"
+    created: "2025-12-03T10:59:40.822289+01:00"
     description: A Helm chart for PostgreSQL Cluster using Crunchy Data Operator on
       OpenShift
     digest: 9ac5e98f05aedb60d97ac1ffa739667e6f2269047a6e3a27222d04dcb5df43f3
@@ -75,4 +75,42 @@ entries:
     urls:
     - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/postgres-cluster-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-03T10:17:15.352738+01:00"
+  quarkus-cxf-server:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-12-03T10:59:40.822503+01:00"
+    description: A Helm chart for Quarkus CXF SOAP Server on OpenShift
+    digest: d7f5593c8ac5a40b2124dd1565a9895a2df551291d9ce4ac13e270eac8419d74
+    keywords:
+    - quarkus
+    - cxf
+    - soap
+    - webservices
+    - wsdl
+    maintainers:
+    - name: Hackathon Team
+    name: quarkus-cxf-server
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/quarkus-cxf-server-0.1.0.tgz
+    version: 0.1.0
+  quarkus-rest-server:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-12-03T10:59:40.8227+01:00"
+    description: A Helm chart for Quarkus REST Server on OpenShift
+    digest: c94e775c95996e6eab5526e4f3def48245dd05253bd1b8eac7b4e4aa756a7fba
+    keywords:
+    - quarkus
+    - rest
+    - api
+    - openapi
+    - swagger
+    maintainers:
+    - name: Hackathon Team
+    name: quarkus-rest-server
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/quarkus-rest-server-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-12-03T10:59:40.820782+01:00"

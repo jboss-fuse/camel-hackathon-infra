@@ -1,0 +1,79 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.restServer.name }}
+  labels:
+    app: {{ .Values.restServer.name }}
+spec:
+  type: {{ .Values.restServer.service.type }}
+  ports:
+    - port: {{ .Values.restServer.service.port }}
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ .Values.restServer.name }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.restServer.name }}
+  labels:
+    app: {{ .Values.restServer.name }}
+spec:
+  replicas: {{ .Values.restServer.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.restServer.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.restServer.name }}
+    spec:
+      containers:
+        - name: quarkus-rest-server
+          image: "{{ .Values.restServer.image.repository }}:{{ .Values.restServer.image.tag }}"
+          imagePullPolicy: {{ .Values.restServer.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.restServer.livenessProbe.httpGet.path }}
+              port: {{ .Values.restServer.livenessProbe.httpGet.port }}
+            initialDelaySeconds: {{ .Values.restServer.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.restServer.livenessProbe.periodSeconds }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.restServer.readinessProbe.httpGet.path }}
+              port: {{ .Values.restServer.readinessProbe.httpGet.port }}
+            initialDelaySeconds: {{ .Values.restServer.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.restServer.readinessProbe.periodSeconds }}
+          resources:
+            requests:
+              memory: {{ .Values.restServer.resources.requests.memory }}
+              cpu: {{ .Values.restServer.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.restServer.resources.limits.memory }}
+              cpu: {{ .Values.restServer.resources.limits.cpu }}
+{{- if .Values.restServer.route.enabled }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Values.restServer.name }}
+  labels:
+    app: {{ .Values.restServer.name }}
+spec:
+  to:
+    kind: Service
+    name: {{ .Values.restServer.name }}
+  port:
+    targetPort: http
+  {{- if .Values.restServer.route.tls.enabled }}
+  tls:
+    termination: {{ .Values.restServer.route.tls.termination }}
+    insecureEdgeTerminationPolicy: {{ .Values.restServer.route.tls.insecureEdgeTerminationPolicy }}
+  {{- end }}
+{{- end }}

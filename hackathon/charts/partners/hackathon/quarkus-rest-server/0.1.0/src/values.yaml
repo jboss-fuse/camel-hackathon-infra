@@ -1,0 +1,53 @@
+# Default values for quarkus-rest-server
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+restServer:
+  # Instance name (will be used for deployment, service, and route names)
+  name: "quarkus-rest-server"
+
+  # Number of replicas
+  replicas: 1
+
+  # Image configuration
+  image:
+    repository: quay.io/fuse_qe/quarkus-rest-server
+    tag: 1.0.0
+    pullPolicy: IfNotPresent
+
+  # Service configuration
+  service:
+    type: ClusterIP
+    port: 8080
+
+  # Route configuration (OpenShift specific)
+  route:
+    enabled: true
+    tls:
+      enabled: true
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+  # Resource limits and requests
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "2Gi"
+      cpu: "1000m"
+
+  # Health check configuration
+  livenessProbe:
+    httpGet:
+      path: /q/health/live
+      port: 8080
+    initialDelaySeconds: 30
+    periodSeconds: 10
+
+  readinessProbe:
+    httpGet:
+      path: /q/health/ready
+      port: 8080
+    initialDelaySeconds: 10
+    periodSeconds: 5

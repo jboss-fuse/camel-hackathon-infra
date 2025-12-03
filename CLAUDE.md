@@ -12,12 +12,12 @@ This repository contains infrastructure resources for the 2025 December Camel Ha
 
 The repository supports two parallel deployment methods:
 
-1. **Direct YAML Manifests** (in `activemq/`, `postgres/`, `observability/`, `fhir/`): Custom Resource definitions or standard Kubernetes resources that can be applied directly with `oc create -f` or `oc apply -f`
+1. **Direct YAML Manifests** (in `activemq/`, `postgres/`, `observability/`, `fhir/`, `quarkus-rest/`, `quarkus-cxf/`): Custom Resource definitions or standard Kubernetes resources that can be applied directly with `oc create -f` or `oc apply -f`
 2. **Helm Charts** (in `hackathon/`): Packaged Helm charts that wrap the same CRDs for deployment via Helm or OpenShift Developer Console
 
 ### Service Components
 
-Five core services are provided:
+Seven core services are provided:
 
 - **ActiveMQ Artemis Broker**: Message broker using AMQ Broker Operator
   - Direct manifest: `activemq/broker.yaml`
@@ -47,6 +47,22 @@ Five core services are provided:
   - Image: `quay.io/fuse_qe/hapi-fhir:v8.2.0`
   - Supports FHIR versions: DSTU3, R4, R5
 
+- **Quarkus REST Server**: REST API demo with OpenAPI documentation
+  - Direct manifest: `quarkus-rest/quarkus-rest-server.yaml`
+  - Helm chart: `hackathon/quarkus-rest-server-0.1.0.tgz`
+  - Uses standard Kubernetes Deployment, Service, and OpenShift Route resources
+  - Image: `quay.io/fuse_qe/quarkus-rest-server:1.0.0`
+  - Provides: Fruit CRUD API, Slow/Faulty services, Multipart upload/download, OpenAPI/Swagger UI
+  - Port: 8080, Health: `/q/health/live`, `/q/health/ready`
+
+- **Quarkus CXF Server**: SOAP web services demo using Apache CXF
+  - Direct manifest: `quarkus-cxf/quarkus-cxf-server.yaml`
+  - Helm chart: `hackathon/quarkus-cxf-server-0.1.0.tgz`
+  - Uses standard Kubernetes Deployment, Service, and OpenShift Route resources
+  - Image: `quay.io/fuse_qe/quarkus-cxf-server:1.0.0`
+  - Provides: Hello, Fruit, Faulty, Slow, MTOM SOAP services
+  - Base path: `/soap`, Port: 8080, WSDLs: `?wsdl` on each endpoint
+
 ### Helm Repository Structure
 
 The `hackathon/` directory serves as a Helm repository compatible with OpenShift's HelmChartRepository:
@@ -59,11 +75,15 @@ hackathon/
 ├── postgres-cluster-0.1.0.tgz
 ├── opentelemetry-infra-0.1.0.tgz
 ├── fhir-0.1.0.tgz
+├── quarkus-rest-server-0.1.0.tgz
+├── quarkus-cxf-server-0.1.0.tgz
 └── charts/partners/hackathon/          # Chart sources
     ├── activemq-artemis/0.1.0/src/
     ├── postgres-cluster/0.1.0/src/
     ├── opentelemetry-infra/0.1.0/src/
-    └── fhir/0.1.0/src/
+    ├── fhir/0.1.0/src/
+    ├── quarkus-rest-server/0.1.0/src/
+    └── quarkus-cxf-server/0.1.0/src/
 ```
 
 Each chart source contains:
@@ -98,6 +118,12 @@ oc apply -f fhir/
 oc create -f fhir/fhir-dstu3-auth.yaml      # FHIR DSTU3 with authentication (admin/admin)
 oc create -f fhir/fhir-dstu3-noauth.yaml    # FHIR DSTU3 without authentication
 oc create -f fhir/fhir-r4-default.yaml      # FHIR R4 without authentication
+
+# Quarkus REST Server
+oc create -f quarkus-rest/quarkus-rest-server.yaml
+
+# Quarkus CXF Server
+oc create -f quarkus-cxf/quarkus-cxf-server.yaml
 ```
 
 ### Helm Chart Deployment
@@ -123,6 +149,12 @@ helm install otel-stack hackathon/opentelemetry-infra -n <namespace>
 
 # FHIR (default: R4, no auth)
 helm install fhir hackathon/fhir -n <namespace>
+
+# Quarkus REST Server
+helm install rest-server hackathon/quarkus-rest-server -n <namespace>
+
+# Quarkus CXF Server
+helm install cxf-server hackathon/quarkus-cxf-server -n <namespace>
 ```
 
 Customize instance names:
@@ -132,6 +164,8 @@ helm install my-broker hackathon/activemq-artemis --set broker.name=my-artemis-b
 helm install my-db hackathon/postgres-cluster --set cluster.name=my-postgres -n <namespace>
 helm install my-otel hackathon/opentelemetry-infra --set tempo.name=my-tempo --set otelCollector.tenantId=production -n <namespace>
 helm install my-fhir hackathon/fhir --set fhir.name=my-fhir-server -n <namespace>
+helm install my-rest hackathon/quarkus-rest-server --set restServer.name=my-quarkus-rest -n <namespace>
+helm install my-cxf hackathon/quarkus-cxf-server --set cxfServer.name=my-quarkus-cxf -n <namespace>
 ```
 
 FHIR-specific customization:
@@ -245,6 +279,71 @@ oc logs deployment/otel-collector -n <namespace>
 oc logs job/otel-post-install -n <namespace>
 ```
 
+**Quarkus REST Server**: Access OpenAPI and APIs
+
+```bash
+# Get route URL
+ROUTE_URL=$(oc get route quarkus-rest-server -o jsonpath='{.spec.host}')
+
+# Access OpenAPI spec
+curl https://$ROUTE_URL/q/openapi
+
+# Access Swagger UI in browser
+echo "Swagger UI: https://$ROUTE_URL/q/swagger-ui"
+
+# List fruits
+curl https://$ROUTE_URL/fruits
+
+# Add a fruit
+curl -X POST https://$ROUTE_URL/fruits \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Banana", "description": "Tropical fruit"}'
+
+# Test slow service (1-second delay)
+curl https://$ROUTE_URL/slow/World
+
+# Test faulty service (throws exception)
+curl https://$ROUTE_URL/faulty/World
+
+# Upload a file
+curl -X POST https://$ROUTE_URL/multipart/upload \
+  -F "file=@/path/to/file.txt"
+```
+
+**Quarkus CXF Server**: Access SOAP services and WSDLs
+
+```bash
+# Get route URL
+ROUTE_URL=$(oc get route quarkus-cxf-server -o jsonpath='{.spec.host}')
+
+# Access WSDL files
+echo "HelloService WSDL: https://$ROUTE_URL/soap/hello?wsdl"
+echo "FruitService WSDL: https://$ROUTE_URL/soap/fruits?wsdl"
+echo "FaultyHelloService WSDL: https://$ROUTE_URL/soap/faulty-hello?wsdl"
+echo "SlowHelloService WSDL: https://$ROUTE_URL/soap/SlowHelloServiceImpl?wsdl"
+echo "MtomService WSDL: https://$ROUTE_URL/soap/mtom?wsdl"
+
+# Call HelloService
+curl -X POST https://$ROUTE_URL/soap/hello \
+  -H "Content-Type: text/xml" \
+  -d '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:hel="http://server.it.cxf.quarkiverse.io/">
+   <soapenv:Body>
+      <hel:hello>
+         <arg0>World</arg0>
+      </hel:hello>
+   </soapenv:Body>
+</soapenv:Envelope>'
+
+# Call FruitService - List Fruits
+curl -X POST https://$ROUTE_URL/soap/fruits \
+  -H "Content-Type: text/xml" \
+  -d '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://server.it.cxf.quarkiverse.io/">
+   <soapenv:Body>
+      <ser:list/>
+   </soapenv:Body>
+</soapenv:Envelope>'
+```
+
 ## Prerequisites
 
 The following services require operators to be installed before deployment:
@@ -256,7 +355,7 @@ The following services require operators to be installed before deployment:
 
 Install operators via OpenShift OperatorHub or using operator subscriptions.
 
-**FHIR** does not require any operators - it uses standard Kubernetes resources.
+**FHIR**, **Quarkus REST Server**, and **Quarkus CXF Server** do not require any operators - they use standard Kubernetes resources.
 
 ## Key Configuration Details
 
@@ -307,6 +406,33 @@ Install operators via OpenShift OperatorHub or using operator subscriptions.
 - Health probes on `/fhir/metadata` endpoint
 - Base path: `/fhir`
 - Startup time: 30-60 seconds for bulk job initialization
+
+**Quarkus REST Server** (`quarkus-rest/quarkus-rest-server.yaml`):
+- Framework: Quarkus 3.30.0
+- Port: 8080
+- Health endpoints: `/q/health/live`, `/q/health/ready`
+- OpenAPI spec: `/q/openapi`
+- Swagger UI: `/q/swagger-ui`
+- Resource limits: 2Gi memory, 1000m CPU
+- Resource requests: 512Mi memory, 250m CPU
+- Services: Fruit CRUD, Slow (1s delay), Faulty (exception handling), Multipart upload/download
+- Image: `quay.io/fuse_qe/quarkus-rest-server:1.0.0`
+
+**Quarkus CXF Server** (`quarkus-cxf/quarkus-cxf-server.yaml`):
+- Framework: Quarkus 3.30.0, Quarkus CXF 3.30.0
+- Port: 8080
+- Base path: `/soap`
+- Health endpoints: `/q/health/live`, `/q/health/ready`
+- Resource limits: 2Gi memory, 1000m CPU
+- Resource requests: 512Mi memory, 250m CPU
+- SOAP Services:
+  - HelloService: `/soap/hello?wsdl`
+  - FruitService: `/soap/fruits?wsdl`
+  - FaultyHelloService: `/soap/faulty-hello?wsdl`
+  - SlowHelloService: `/soap/SlowHelloServiceImpl?wsdl`
+  - MtomService: `/soap/mtom?wsdl`
+- Image: `quay.io/fuse_qe/quarkus-cxf-server:1.0.0`
+- Pretty-print logging enabled for HelloService and FruitService
 
 ## Modifying Charts
 
