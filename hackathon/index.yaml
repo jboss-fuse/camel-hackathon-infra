@@ -3,9 +3,9 @@ entries:
   activemq-artemis:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-03T11:43:46.592227+01:00"
+    created: "2025-12-03T11:54:51.154270295+01:00"
     description: A Helm chart for ActiveMQ Artemis Broker on OpenShift
-    digest: b13ff241bbf1d3bc181c6bcf8e270eea7c1fbdee0556123918ad866adcd21493
+    digest: a8d3d090342834ea60848716daaf1102f2ce5aa283a64e32efd2b47cf48a30cd
     keywords:
     - activemq
     - artemis
@@ -21,9 +21,9 @@ entries:
   apicurio-registry:
   - apiVersion: v2
     appVersion: 2.6.13
-    created: "2025-12-03T11:43:46.592386+01:00"
+    created: "2025-12-03T11:54:51.154414969+01:00"
     description: A Helm chart for Apicurio Registry on OpenShift
-    digest: fa8de20a488c0ad39df6f0de165481861e2d1e7ef3819d46f2d2f45875be85f2
+    digest: 2ef333f9eff25ad460e5c6a1f7dfa44ce5e8574ee27e70c06e3e0dd000a44815
     keywords:
     - apicurio
     - registry
@@ -40,9 +40,9 @@ entries:
   fhir:
   - apiVersion: v2
     appVersion: 8.2.0
-    created: "2025-12-03T11:43:46.592875+01:00"
+    created: "2025-12-03T11:54:51.154622366+01:00"
     description: A Helm chart for HAPI FHIR Server on OpenShift
-    digest: 73431c2cd921fe97e4a91414dde640d05799ddc82ef8574bc3ba0dbd69b61032
+    digest: e80a7e28c566a33a5c746804e77a7cc53d7bf55eb903dffd6e574a49d7ce3c5b
     keywords:
     - fhir
     - hapi
@@ -58,9 +58,9 @@ entries:
   opentelemetry-infra:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-03T11:43:46.593378+01:00"
+    created: "2025-12-03T11:54:51.154889313+01:00"
     description: A Helm chart for OpenTelemetry stack on OpenShift
-    digest: 91fb9f8e5285379e6f1eae53f2988129698a12daf7ed771ea40c673b2fa6e05b
+    digest: 3831613d0931c4803097d6c4e5b6067d376ab2e59512773996e20906577b2e7f
     keywords:
     - tempo
     - grafana
@@ -78,10 +78,10 @@ entries:
   postgres-cluster:
   - apiVersion: v2
     appVersion: "17"
-    created: "2025-12-03T11:43:46.593702+01:00"
+    created: "2025-12-03T11:54:51.154986665+01:00"
     description: A Helm chart for PostgreSQL Cluster using Crunchy Data Operator on
       OpenShift
-    digest: 3bb7148c687312f0e8fcbb8bf0d83aa52c03259ed28ec430308eea81fe81620a
+    digest: c019d7fd7903c1eab3d8cbf7fef0cf30291164a45490e0e62cd2973bfb208bad
     keywords:
     - postgresql
     - postgres
@@ -97,9 +97,9 @@ entries:
   quarkus-cxf-server:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-03T11:43:46.593977+01:00"
+    created: "2025-12-03T11:54:51.155162482+01:00"
     description: A Helm chart for Quarkus CXF SOAP Server on OpenShift
-    digest: 445104fdf5572f289a09ea560a0a44704f2b9358b5e76802d1916745b767e74d
+    digest: ea1d0c373fd67e412170e8d5854b38f7c86c493ed3fdba8ae07d35f9f4d8bb7d
     keywords:
     - quarkus
     - cxf
@@ -116,9 +116,9 @@ entries:
   quarkus-rest-server:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-03T11:43:46.594271+01:00"
+    created: "2025-12-03T11:54:51.155329985+01:00"
     description: A Helm chart for Quarkus REST Server on OpenShift
-    digest: e42aa2046da037cf429690d409b50cc53538f25fe664ddace944107101c2c3a5
+    digest: 04599c4e8e005211c46508d110787de06a2efbbeeeaaddc1e982f2a50f322f2f
     keywords:
     - quarkus
     - rest
@@ -132,4 +132,23 @@ entries:
     urls:
     - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/quarkus-rest-server-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-03T11:43:46.591731+01:00"
+  strimzi-cluster:
+  - apiVersion: v2
+    appVersion: 3.9.0
+    created: "2025-12-03T11:54:51.155448592+01:00"
+    description: A Helm chart for Kafka cluster using Strimzi Operator on OpenShift
+    digest: 7424fab657258d1d039533676ae4d28fdc65d2a485e64b9739da35ea7c59ee8b
+    keywords:
+    - kafka
+    - strimzi
+    - messaging
+    - streaming
+    - event-driven
+    maintainers:
+    - name: Hackathon Team
+    name: strimzi-cluster
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/strimzi-cluster-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-12-03T11:54:51.154056659+01:00"
