@@ -1,0 +1,14 @@
+apiVersion: v2
+name: quarkus-rest-server
+description: A Helm chart for Quarkus REST Server on OpenShift
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - quarkus
+  - rest
+  - api
+  - openapi
+  - swagger
+maintainers:
+  - name: Hackathon Team

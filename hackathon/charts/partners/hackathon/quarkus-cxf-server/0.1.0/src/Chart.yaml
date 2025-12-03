@@ -1,0 +1,14 @@
+apiVersion: v2
+name: quarkus-cxf-server
+description: A Helm chart for Quarkus CXF SOAP Server on OpenShift
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - quarkus
+  - cxf
+  - soap
+  - webservices
+  - wsdl
+maintainers:
+  - name: Hackathon Team
