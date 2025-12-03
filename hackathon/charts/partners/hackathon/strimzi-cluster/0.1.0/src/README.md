@@ -46,7 +46,7 @@ Apache Kafka cluster running in KRaft mode (no ZooKeeper).
 
 **Default Configuration:**
 - Name: `strimzi-cluster`
-- Version: `3.9.0`
+- Version: `4.0.0`
 - Mode: KRaft (ZooKeeper-less)
 - Replication factor: 1
 - Listeners:
@@ -60,16 +60,14 @@ Apache Kafka cluster running in KRaft mode (no ZooKeeper).
 | Parameter | Description | Default |
 |-----------|-------------|---------|
 | `kafka.name` | Name of the Kafka cluster | `strimzi-cluster` |
-| `kafka.version` | Kafka version | `3.9.0` |
-| `nodePool.name` | Name of the node pool | `multirole` |
-| `nodePool.replicas` | Number of Kafka nodes | `1` |
+| `kafka.version` | Kafka version | `4.0.0` |
 
 ### Example: Custom Configuration
 
 ```bash
 helm install my-kafka hackathon/strimzi-cluster \
   --set kafka.name=my-kafka-cluster \
-  --set nodePool.replicas=3 \
+  --set kafka.version=4.0.0 \
   -n kafka
 ```
 
