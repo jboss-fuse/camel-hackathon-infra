@@ -55,7 +55,7 @@ echo "REST Server URL: https://$ROUTE_URL"
 
 Access the following endpoints:
 
-- **OpenAPI Specification**: `https://$ROUTE_URL/q/openapi`
+- **OpenAPI Specification**: `https://$ROUTE_URL/openapi`
 - **Swagger UI**: `https://$ROUTE_URL/q/swagger-ui`
 - **Health Check**: `https://$ROUTE_URL/q/health`
 - **Fruits API**: `https://$ROUTE_URL/fruits`

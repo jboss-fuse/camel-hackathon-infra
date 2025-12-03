@@ -40,14 +40,14 @@ restServer:
   # Health check configuration
   livenessProbe:
     httpGet:
-      path: /q/openapi
+      path: /openapi
       port: 8080
     initialDelaySeconds: 30
     periodSeconds: 10
 
   readinessProbe:
     httpGet:
-      path: /q/openapi
+      path: /openapi
       port: 8080
     initialDelaySeconds: 10
     periodSeconds: 5

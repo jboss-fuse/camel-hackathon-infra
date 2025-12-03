@@ -97,7 +97,7 @@ Once deployed, you can access the following endpoints:
 
 | Endpoint | Description | Method |
 |----------|-------------|--------|
-| `/q/openapi` | OpenAPI specification | GET |
+| `/openapi` | OpenAPI specification | GET |
 | `/q/swagger-ui` | Interactive Swagger UI | GET |
 | `/q/health` | Health check endpoint | GET |
 | `/fruits` | List all fruits | GET |
@@ -117,7 +117,7 @@ Once deployed, you can access the following endpoints:
 REST_URL=$(oc get route quarkus-rest-server -n $NAMESPACE -o jsonpath='{.spec.host}')
 
 # Access OpenAPI specification
-curl https://$REST_URL/q/openapi
+curl https://$REST_URL/openapi
 
 # Access Swagger UI in browser
 echo "Swagger UI: https://$REST_URL/q/swagger-ui"

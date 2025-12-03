@@ -1,0 +1,35 @@
+apiVersion: hawt.io/v2
+kind: Hawtio
+metadata:
+  name: {{ .Values.hawtio.name }}
+spec:
+  type: {{ .Values.hawtio.type | title }}
+  replicas: {{ .Values.hawtio.replicas }}
+  {{- if .Values.hawtio.routeHostName }}
+  routeHostName: {{ .Values.hawtio.routeHostName }}
+  {{- end }}
+  resources:
+    limits:
+      cpu: {{ .Values.hawtio.resources.limits.cpu | quote }}
+      memory: {{ .Values.hawtio.resources.limits.memory }}
+    requests:
+      cpu: {{ .Values.hawtio.resources.requests.cpu | quote }}
+      memory: {{ .Values.hawtio.resources.requests.memory }}
+  {{- if .Values.hawtio.route }}
+  route:
+    {{- if .Values.hawtio.route.certSecret }}
+    certSecret:
+      name: {{ .Values.hawtio.route.certSecret.name }}
+    {{- end }}
+    {{- if .Values.hawtio.route.caCert }}
+    caCert:
+      name: {{ .Values.hawtio.route.caCert.name }}
+      {{- if .Values.hawtio.route.caCert.key }}
+      key: {{ .Values.hawtio.route.caCert.key }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.hawtio.externalRoutes }}
+  externalRoutes:
+    {{- toYaml .Values.hawtio.externalRoutes | nindent 4 }}
+  {{- end }}
