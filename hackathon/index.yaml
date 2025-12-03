@@ -3,7 +3,7 @@ entries:
   activemq-artemis:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-03T11:34:59.398295811+01:00"
+    created: "2025-12-03T11:43:46.592227+01:00"
     description: A Helm chart for ActiveMQ Artemis Broker on OpenShift
     digest: b13ff241bbf1d3bc181c6bcf8e270eea7c1fbdee0556123918ad866adcd21493
     keywords:
@@ -18,10 +18,29 @@ entries:
     urls:
     - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/activemq-artemis-0.1.0.tgz
     version: 0.1.0
+  apicurio-registry:
+  - apiVersion: v2
+    appVersion: 2.6.13
+    created: "2025-12-03T11:43:46.592386+01:00"
+    description: A Helm chart for Apicurio Registry on OpenShift
+    digest: fa8de20a488c0ad39df6f0de165481861e2d1e7ef3819d46f2d2f45875be85f2
+    keywords:
+    - apicurio
+    - registry
+    - schema
+    - api
+    - service-registry
+    maintainers:
+    - name: Hackathon Team
+    name: apicurio-registry
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/apicurio-registry-0.1.0.tgz
+    version: 0.1.0
   fhir:
   - apiVersion: v2
     appVersion: 8.2.0
-    created: "2025-12-03T11:34:59.402295284+01:00"
+    created: "2025-12-03T11:43:46.592875+01:00"
     description: A Helm chart for HAPI FHIR Server on OpenShift
     digest: 73431c2cd921fe97e4a91414dde640d05799ddc82ef8574bc3ba0dbd69b61032
     keywords:
@@ -39,7 +58,7 @@ entries:
   opentelemetry-infra:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-03T11:34:59.402900673+01:00"
+    created: "2025-12-03T11:43:46.593378+01:00"
     description: A Helm chart for OpenTelemetry stack on OpenShift
     digest: 91fb9f8e5285379e6f1eae53f2988129698a12daf7ed771ea40c673b2fa6e05b
     keywords:
@@ -59,7 +78,7 @@ entries:
   postgres-cluster:
   - apiVersion: v2
     appVersion: "17"
-    created: "2025-12-03T11:34:59.403038235+01:00"
+    created: "2025-12-03T11:43:46.593702+01:00"
     description: A Helm chart for PostgreSQL Cluster using Crunchy Data Operator on
       OpenShift
     digest: 3bb7148c687312f0e8fcbb8bf0d83aa52c03259ed28ec430308eea81fe81620a
@@ -78,7 +97,7 @@ entries:
   quarkus-cxf-server:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-03T11:34:59.403759308+01:00"
+    created: "2025-12-03T11:43:46.593977+01:00"
     description: A Helm chart for Quarkus CXF SOAP Server on OpenShift
     digest: 445104fdf5572f289a09ea560a0a44704f2b9358b5e76802d1916745b767e74d
     keywords:
@@ -97,7 +116,7 @@ entries:
   quarkus-rest-server:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-03T11:34:59.403989847+01:00"
+    created: "2025-12-03T11:43:46.594271+01:00"
     description: A Helm chart for Quarkus REST Server on OpenShift
     digest: e42aa2046da037cf429690d409b50cc53538f25fe664ddace944107101c2c3a5
     keywords:
@@ -113,4 +132,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/quarkus-rest-server-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-03T11:34:59.397962859+01:00"
+generated: "2025-12-03T11:43:46.591731+01:00"

@@ -1,0 +1,14 @@
+apiVersion: v2
+name: apicurio-registry
+description: A Helm chart for Apicurio Registry on OpenShift
+type: application
+version: 0.1.0
+appVersion: "2.6.13"
+keywords:
+  - apicurio
+  - registry
+  - schema
+  - api
+  - service-registry
+maintainers:
+  - name: Hackathon Team

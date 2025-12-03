@@ -1,0 +1,7 @@
+apiVersion: registry.apicur.io/v1
+kind: ApicurioRegistry
+metadata:
+  name: {{ .Values.registry.name | default "apicurio-registry" }}
+spec:
+  deployment:
+    replicas: {{ .Values.registry.deployment.replicas | default 1 }}
