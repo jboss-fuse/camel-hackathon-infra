@@ -1,0 +1,13 @@
+apiVersion: v2
+name: fhir
+description: A Helm chart for HAPI FHIR Server on OpenShift
+type: application
+version: 0.1.0
+appVersion: "8.2.0"
+keywords:
+  - fhir
+  - hapi
+  - healthcare
+  - hl7
+maintainers:
+  - name: Hackathon Team

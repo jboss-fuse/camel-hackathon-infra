@@ -1,0 +1,95 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.fhir.name }}
+  labels:
+    app: {{ .Values.fhir.name }}
+spec:
+  type: {{ .Values.fhir.service.type }}
+  ports:
+    - port: {{ .Values.fhir.service.port }}
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    app: {{ .Values.fhir.name }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.fhir.name }}
+  labels:
+    app: {{ .Values.fhir.name }}
+spec:
+  replicas: {{ .Values.fhir.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.fhir.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.fhir.name }}
+    spec:
+      containers:
+        - name: fhir
+          image: "{{ .Values.fhir.image.repository }}:{{ .Values.fhir.image.tag }}"
+          imagePullPolicy: {{ .Values.fhir.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: FHIR_VERSION
+              value: "{{ .Values.fhir.version }}"
+            - name: AUTH_ENABLED
+              value: "{{ .Values.fhir.auth.enabled }}"
+            {{- if .Values.fhir.auth.enabled }}
+            - name: AUTH_USERNAME
+              value: "{{ .Values.fhir.auth.username }}"
+            - name: AUTH_PASSWORD
+              value: "{{ .Values.fhir.auth.password }}"
+            {{- else }}
+            - name: AUTH_USERNAME
+              value: ""
+            - name: AUTH_PASSWORD
+              value: ""
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.fhir.livenessProbe.httpGet.path }}
+              port: {{ .Values.fhir.livenessProbe.httpGet.port }}
+            initialDelaySeconds: {{ .Values.fhir.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.fhir.livenessProbe.periodSeconds }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.fhir.readinessProbe.httpGet.path }}
+              port: {{ .Values.fhir.readinessProbe.httpGet.port }}
+            initialDelaySeconds: {{ .Values.fhir.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.fhir.readinessProbe.periodSeconds }}
+          resources:
+            requests:
+              memory: {{ .Values.fhir.resources.requests.memory }}
+              cpu: {{ .Values.fhir.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.fhir.resources.limits.memory }}
+              cpu: {{ .Values.fhir.resources.limits.cpu }}
+{{- if .Values.fhir.route.enabled }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Values.fhir.name }}
+  labels:
+    app: {{ .Values.fhir.name }}
+spec:
+  to:
+    kind: Service
+    name: {{ .Values.fhir.name }}
+  port:
+    targetPort: http
+  {{- if .Values.fhir.route.tls.enabled }}
+  tls:
+    termination: {{ .Values.fhir.route.tls.termination }}
+    insecureEdgeTerminationPolicy: {{ .Values.fhir.route.tls.insecureEdgeTerminationPolicy }}
+  {{- end }}
+{{- end }}

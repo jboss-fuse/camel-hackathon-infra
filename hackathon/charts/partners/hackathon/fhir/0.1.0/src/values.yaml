@@ -1,0 +1,62 @@
+# Default values for fhir
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+fhir:
+  # FHIR version to deploy (DSTU3, R4, R5)
+  version: "R4"
+
+  # Instance name (will be used for deployment, service, and route names)
+  name: "fhir-server"
+
+  # Authentication settings
+  auth:
+    enabled: false
+    username: "admin"
+    password: "admin"
+
+  # Resource limits and requests
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "250m"
+    limits:
+      memory: "2Gi"
+      cpu: "1000m"
+
+  # Number of replicas
+  replicas: 1
+
+  # Image configuration
+  image:
+    repository: quay.io/fuse_qe/hapi-fhir
+    tag: v8.2.0
+    pullPolicy: IfNotPresent
+
+  # Service configuration
+  service:
+    type: ClusterIP
+    port: 8080
+
+  # Route configuration (OpenShift specific)
+  route:
+    enabled: true
+    tls:
+      enabled: true
+      termination: edge
+      insecureEdgeTerminationPolicy: Redirect
+
+  # Health check configuration
+  livenessProbe:
+    httpGet:
+      path: /fhir/metadata
+      port: 8080
+    initialDelaySeconds: 60
+    periodSeconds: 10
+
+  readinessProbe:
+    httpGet:
+      path: /fhir/metadata
+      port: 8080
+    initialDelaySeconds: 30
+    periodSeconds: 5
