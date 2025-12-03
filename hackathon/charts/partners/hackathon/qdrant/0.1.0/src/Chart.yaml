@@ -1,0 +1,16 @@
+apiVersion: v2
+name: qdrant
+description: A Helm chart for deploying Qdrant vector database on OpenShift
+type: application
+version: 0.1.0
+appVersion: "1.15.1"
+keywords:
+  - qdrant
+  - vector-database
+  - similarity-search
+  - machine-learning
+home: https://qdrant.tech/
+sources:
+  - https://github.com/qdrant/qdrant
+maintainers:
+  - name: Hackathon Team

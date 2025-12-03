@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.qdrant.name }}
+  labels:
+    app: {{ .Values.qdrant.name }}
+spec:
+  replicas: {{ .Values.qdrant.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.qdrant.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.qdrant.name }}
+    spec:
+      containers:
+      - name: qdrant
+        image: {{ .Values.qdrant.image }}
+        workingDir: /qdrant
+        ports:
+        - containerPort: {{ .Values.qdrant.port }}
+          name: http
+          protocol: TCP
+        - containerPort: {{ .Values.qdrant.grpcPort }}
+          name: grpc
+          protocol: TCP
+        resources:
+          limits:
+            memory: {{ .Values.qdrant.resources.limits.memory }}
+            cpu: {{ .Values.qdrant.resources.limits.cpu }}
+          requests:
+            memory: {{ .Values.qdrant.resources.requests.memory }}
+            cpu: {{ .Values.qdrant.resources.requests.cpu }}
+        livenessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.qdrant.port }}
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.qdrant.port }}
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 3
+        volumeMounts:
+        - name: qdrant-storage
+          mountPath: /qdrant/storage
+        - name: qdrant-snapshots
+          mountPath: /qdrant/snapshots
+      volumes:
+      - name: qdrant-storage
+        emptyDir: {}
+      - name: qdrant-snapshots
+        emptyDir: {}
