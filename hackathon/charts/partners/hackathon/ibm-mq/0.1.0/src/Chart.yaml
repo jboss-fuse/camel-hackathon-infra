@@ -1,0 +1,6 @@
+apiVersion: v2
+name: ibm-mq
+description: IBM MQ Queue Manager for the Camel Hackathon
+type: application
+version: 0.1.0
+appVersion: "9.4.4.0-r3"

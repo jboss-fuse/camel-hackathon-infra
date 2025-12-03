@@ -1,0 +1,9 @@
+{{- if .Values.queueManager.mqsc.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.queueManager.name }}-mqsc
+data:
+  mqsc.ini: |
+{{ .Values.queueManager.mqsc.commands | indent 4 }}
+{{- end }}

@@ -1,0 +1,43 @@
+apiVersion: mq.ibm.com/v1beta1
+kind: QueueManager
+metadata:
+  name: {{ .Values.queueManager.name }}
+spec:
+  license:
+    accept: {{ .Values.queueManager.license.accept }}
+    license: {{ .Values.queueManager.license.license }}
+    {{- if .Values.queueManager.license.metric }}
+    metric: {{ .Values.queueManager.license.metric }}
+    {{- end }}
+    use: {{ .Values.queueManager.license.use }}
+  queueManager:
+    name: {{ .Values.queueManager.mqName }}
+    {{- if .Values.queueManager.mqsc.enabled }}
+    mqsc:
+      - configMap:
+          name: {{ .Values.queueManager.name }}-mqsc
+          items:
+            - mqsc.ini
+    {{- end }}
+    resources:
+      limits:
+        cpu: {{ .Values.queueManager.resources.limits.cpu }}
+      requests:
+        cpu: {{ .Values.queueManager.resources.requests.cpu }}
+    storage:
+      queueManager:
+        type: {{ .Values.queueManager.storage.type }}
+  version: {{ .Values.queueManager.version }}
+  web:
+    enabled: {{ .Values.queueManager.web.enabled }}
+    {{- if and .Values.queueManager.web.authentication.enabled .Values.queueManager.web.console }}
+    console:
+      {{- if .Values.queueManager.web.console.authentication }}
+      authentication:
+        provider: {{ .Values.queueManager.web.console.authentication.provider }}
+      {{- end }}
+      {{- if .Values.queueManager.web.console.authorization }}
+      authorization:
+        provider: {{ .Values.queueManager.web.console.authorization.provider }}
+      {{- end }}
+    {{- end }}
