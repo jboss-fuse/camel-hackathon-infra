@@ -3,8 +3,6 @@ kind: ServiceMonitor
 metadata:
   name: {{ .Values.serviceMonitor.name | default "otel-collector-sm" }}
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-weight": "5"
 spec:
   endpoints:
     - interval: {{ .Values.serviceMonitor.interval | default "30s" }}

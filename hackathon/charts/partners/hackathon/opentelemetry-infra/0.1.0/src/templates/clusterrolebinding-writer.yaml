@@ -3,8 +3,6 @@ kind: ClusterRoleBinding
 metadata:
   name: {{ .Values.clusterRoleBinding.writer.name | default "tempo-traces-from-otel" }}
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-weight": "2"
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.serviceAccount.name | default "otel-collector-sa" }}

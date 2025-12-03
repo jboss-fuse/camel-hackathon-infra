@@ -3,9 +3,9 @@ entries:
   activemq-artemis:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-03T09:21:02.327937836+01:00"
+    created: "2025-12-03T10:25:45.578910941+01:00"
     description: A Helm chart for ActiveMQ Artemis Broker on OpenShift
-    digest: bdb11acada9925f2b72b60bb1f49702a871b89eb65796784b52ae22f445f411a
+    digest: a51084dd7abf488549ea60017a38a00301fbf080bbcaf95e23eafd5cd1b2471e
     keywords:
     - activemq
     - artemis
@@ -21,9 +21,9 @@ entries:
   opentelemetry-infra:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-03T09:21:02.360006651+01:00"
+    created: "2025-12-03T10:25:45.646465615+01:00"
     description: A Helm chart for OpenTelemetry stack on OpenShift
-    digest: 823cc169f9eedc6629bcb53ac423399c943f0a070d26763699abeb13f5819be1
+    digest: 0ed79ac0f7b420d48627deefda302147d7b50f98af04814e6e16cf858121541b
     keywords:
     - tempo
     - grafana
@@ -41,10 +41,10 @@ entries:
   postgres-cluster:
   - apiVersion: v2
     appVersion: "17"
-    created: "2025-12-03T09:21:02.360809478+01:00"
+    created: "2025-12-03T10:25:45.646606656+01:00"
     description: A Helm chart for PostgreSQL Cluster using Crunchy Data Operator on
       OpenShift
-    digest: 08ed831561fe782e6b5b2ff738ec53ff24c7a9530c0817771937b7a2fd68566d
+    digest: b9b3b46601887ba701c724fad98c90e6b31cb5d299c86acbeccce523792ce94a
     keywords:
     - postgresql
     - postgres
@@ -57,4 +57,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/postgres-cluster-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-03T09:21:02.327735015+01:00"
+generated: "2025-12-03T10:25:45.578707812+01:00"

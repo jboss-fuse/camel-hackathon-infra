@@ -40,7 +40,7 @@ helm install my-otel-stack hackathon/opentelemetry-infra -n observability --crea
 
 ## Components Deployed
 
-### 1. Tempo Monolithic (Hook Weight: 0)
+### 1. Tempo Monolithic
 Distributed tracing backend with OpenTelemetry support and multi-tenancy.
 
 **Default Configuration:**
@@ -50,21 +50,23 @@ Distributed tracing backend with OpenTelemetry support and multi-tenancy.
 - Storage: Memory (for demo/testing)
 - OTLP ingestion: gRPC and HTTP enabled
 
-### 2. ServiceAccount (Hook Weight: 1)
+### 2. ServiceAccount
 ServiceAccount for OpenTelemetry Collector pods.
 
 **Default:** `otel-collector-sa`
 
-### 3. ClusterRoles (Hook Weight: 1)
+### 3. ClusterRoles
 Two ClusterRoles for trace access control:
 - **tempo-traces-reader** - Read access to traces
 - **tempo-traces-write** - Write access to traces
 
-### 4. ClusterRoleBindings (Hook Weight: 2)
-- **tempo-traces-reader** - Binds reader role to `system:authenticated` group
+**Note:** These resources are preserved on uninstall (kept for reuse).
+
+### 4. ClusterRoleBindings
+- **tempo-traces-reader** - Binds reader role to `system:authenticated` group (preserved on uninstall)
 - **tempo-traces-from-otel** - Binds writer role to OTel Collector ServiceAccount
 
-### 5. OpenTelemetry Collector (Hook Weight: 3)
+### 5. OpenTelemetry Collector
 Collects telemetry data from applications and exports to Tempo.
 
 **Default Configuration:**
@@ -75,7 +77,7 @@ Collects telemetry data from applications and exports to Tempo.
 - Batch processing: 500 records, 10s timeout
 - Prometheus endpoint: `:8889`
 
-### 6. Instrumentation (Hook Weight: 4)
+### 6. Instrumentation
 Auto-instrumentation for Java/Camel applications.
 
 **Default Configuration:**
@@ -85,15 +87,12 @@ Auto-instrumentation for Java/Camel applications.
 - JMX target: Camel
 - Disabled instrumentations: Apache HTTP Client, Undertow, Servlet
 
-### 7. ServiceMonitor (Hook Weight: 5)
+### 7. ServiceMonitor
 Prometheus ServiceMonitor for scraping metrics from OTel Collector.
 
 **Default Configuration:**
 - Name: `otel-collector-sm`
 - Scrape interval: 30s
-
-### 8. Post-Install Job (Hook Weight: 5)
-Verification job that checks all deployed resources.
 
 ## Configuration
 
@@ -150,33 +149,29 @@ spec:
 
 The OpenTelemetry Operator will automatically inject the Java agent and configure it to send traces to the collector.
 
-## Installation Order (Helm Hooks)
-
-The chart uses Helm hooks to ensure resources are deployed in the correct order:
-
-```
-1. Tempo Monolithic (weight: 0)
-   ↓
-2. ServiceAccount + ClusterRoles (weight: 1)
-   ↓
-3. ClusterRoleBindings (weight: 2)
-   ↓
-4. OpenTelemetry Collector (weight: 3)
-   ↓
-5. Instrumentation (weight: 4)
-   ↓
-6. ServiceMonitor + Post-Install Job (weight: 5)
-```
-
 ## Verification
 
-After installation, check the post-install job logs to verify all resources:
+After installation, verify all resources are created:
 
 ```bash
-oc logs job/otel-post-install -n observability
-```
+# Check Tempo instance
+oc get tempomono -n observability
 
-You should see a verification report showing all deployed resources.
+# Check OpenTelemetry Collector
+oc get otelcol -n observability
+
+# Check Instrumentation
+oc get instrumentation -n observability
+
+# Check ServiceAccount
+oc get sa -n observability | grep otel-collector
+
+# Check ClusterRoles (cluster-scoped)
+oc get clusterrole | grep tempo-traces
+
+# Check ClusterRoleBindings (cluster-scoped)
+oc get clusterrolebinding | grep tempo-traces
+```
 
 ## Accessing Traces and Metrics
 
@@ -230,7 +225,19 @@ curl http://localhost:8889/metrics
 helm uninstall my-otel-stack -n observability
 ```
 
-**Note:** ClusterRoles and ClusterRoleBindings may need manual cleanup as they are cluster-scoped resources.
+**Note:** The following cluster-scoped resources are intentionally preserved for reuse:
+- ClusterRole: `tempo-traces-reader`
+- ClusterRole: `tempo-traces-write`
+- ClusterRoleBinding: `tempo-traces-reader`
+
+To manually remove them:
+
+```bash
+oc delete clusterrole tempo-traces-reader tempo-traces-write
+oc delete clusterrolebinding tempo-traces-reader
+```
+
+All other resources (Tempo, OTel Collector, Instrumentation, ServiceMonitor, ServiceAccount, and the writer ClusterRoleBinding) will be automatically deleted.
 
 ## Troubleshooting
 
