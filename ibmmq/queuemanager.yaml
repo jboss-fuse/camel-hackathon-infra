@@ -1,0 +1,28 @@
+apiVersion: mq.ibm.com/v1beta1
+kind: QueueManager
+metadata:
+  name: quickstart
+spec:
+  license:
+    accept: true
+    license: L-HYGL-6STWD6
+    metric: FREE
+    use: Development
+  queueManager:
+    name: QUICKSTART
+    resources:
+      limits:
+        cpu: 500m
+      requests:
+        cpu: 500m
+    storage:
+      queueManager:
+        type: ephemeral
+  version: 9.4.4.0-r3
+  web:
+    enabled: true
+    console:
+      authentication:
+        provider: manual
+      authorization:
+        provider: manual

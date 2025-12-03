@@ -1,0 +1,52 @@
+queueManager:
+  # Name of the QueueManager resource
+  name: quickstart
+
+  # MQ Queue Manager name (must be uppercase)
+  mqName: QUICKSTART
+
+  # License configuration
+  license:
+    accept: true
+    license: L-HYGL-6STWD6  # Developer (Non-Warranted) license - uses public images
+    metric: FREE
+    use: Development
+
+  # Resource limits and requests
+  resources:
+    limits:
+      cpu: 500m
+    requests:
+      cpu: 500m
+
+  # Storage configuration
+  storage:
+    type: ephemeral  # Use ephemeral storage for quick start
+
+  # MQ version
+  version: 9.4.4.0-r3
+
+  # MQSC configuration (MQ commands to run at startup)
+  # This disables authentication for development/testing
+  mqsc:
+    enabled: true
+    # Disable channel authentication and allow anonymous connections
+    commands: |
+      ALTER QMGR CHLAUTH(DISABLED)
+      ALTER QMGR CONNAUTH(' ')
+      REFRESH SECURITY TYPE(CONNAUTH)
+      DEFINE CHANNEL(DEV.APP.SVRCONN) CHLTYPE(SVRCONN) MCAUSER('nobody') REPLACE
+      ALTER CHANNEL(SYSTEM.DEF.SVRCONN) CHLTYPE(SVRCONN) MCAUSER('nobody')
+      REFRESH SECURITY(*)
+
+  # Web console configuration
+  web:
+    enabled: true
+    # Set to false to disable authentication (allows anonymous access)
+    authentication:
+      enabled: true
+    console:
+      authentication:
+        provider: manual
+      authorization:
+        provider: manual
