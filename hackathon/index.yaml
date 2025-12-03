@@ -18,6 +18,24 @@ entries:
     urls:
     - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/activemq-artemis-0.1.0.tgz
     version: 0.1.0
+  fhir:
+  - apiVersion: v2
+    appVersion: 8.2.0
+    created: "2025-12-03T10:17:15.35344+01:00"
+    description: A Helm chart for HAPI FHIR Server on OpenShift
+    digest: 5ff665c2552abb1ff5616a4e93ec9699d1fa03a6740793e866ee2cfad1490bc0
+    keywords:
+    - fhir
+    - hapi
+    - healthcare
+    - hl7
+    maintainers:
+    - name: Hackathon Team
+    name: fhir
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/fhir-0.1.0.tgz
+    version: 0.1.0
   opentelemetry-infra:
   - apiVersion: v2
     appVersion: "1.0"
@@ -57,4 +75,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/postgres-cluster-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-03T10:42:47.235369275+01:00"
+generated: "2025-12-03T10:17:15.352738+01:00"
