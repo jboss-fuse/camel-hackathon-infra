@@ -3,9 +3,9 @@ entries:
   activemq-artemis:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-03T10:59:40.821438+01:00"
+    created: "2025-12-03T11:34:59.398295811+01:00"
     description: A Helm chart for ActiveMQ Artemis Broker on OpenShift
-    digest: b879a970425f506df0dce35912ad1eb9bfa78d890d81e8714fd3e76a9ff75d32
+    digest: b13ff241bbf1d3bc181c6bcf8e270eea7c1fbdee0556123918ad866adcd21493
     keywords:
     - activemq
     - artemis
@@ -21,9 +21,9 @@ entries:
   fhir:
   - apiVersion: v2
     appVersion: 8.2.0
-    created: "2025-12-03T10:17:15.35344+01:00"
+    created: "2025-12-03T11:34:59.402295284+01:00"
     description: A Helm chart for HAPI FHIR Server on OpenShift
-    digest: 5ff665c2552abb1ff5616a4e93ec9699d1fa03a6740793e866ee2cfad1490bc0
+    digest: 73431c2cd921fe97e4a91414dde640d05799ddc82ef8574bc3ba0dbd69b61032
     keywords:
     - fhir
     - hapi
@@ -39,9 +39,9 @@ entries:
   opentelemetry-infra:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-03T10:59:40.82198+01:00"
+    created: "2025-12-03T11:34:59.402900673+01:00"
     description: A Helm chart for OpenTelemetry stack on OpenShift
-    digest: 10219ee096d03226735f83053286ff8ed55fa8ec0929bc98a5b1c90544033b80
+    digest: 91fb9f8e5285379e6f1eae53f2988129698a12daf7ed771ea40c673b2fa6e05b
     keywords:
     - tempo
     - grafana
@@ -59,10 +59,10 @@ entries:
   postgres-cluster:
   - apiVersion: v2
     appVersion: "17"
-    created: "2025-12-03T10:59:40.822289+01:00"
+    created: "2025-12-03T11:34:59.403038235+01:00"
     description: A Helm chart for PostgreSQL Cluster using Crunchy Data Operator on
       OpenShift
-    digest: 9ac5e98f05aedb60d97ac1ffa739667e6f2269047a6e3a27222d04dcb5df43f3
+    digest: 3bb7148c687312f0e8fcbb8bf0d83aa52c03259ed28ec430308eea81fe81620a
     keywords:
     - postgresql
     - postgres
@@ -78,9 +78,9 @@ entries:
   quarkus-cxf-server:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-03T10:59:40.822503+01:00"
+    created: "2025-12-03T11:34:59.403759308+01:00"
     description: A Helm chart for Quarkus CXF SOAP Server on OpenShift
-    digest: d7f5593c8ac5a40b2124dd1565a9895a2df551291d9ce4ac13e270eac8419d74
+    digest: 445104fdf5572f289a09ea560a0a44704f2b9358b5e76802d1916745b767e74d
     keywords:
     - quarkus
     - cxf
@@ -97,9 +97,9 @@ entries:
   quarkus-rest-server:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-03T10:59:40.8227+01:00"
+    created: "2025-12-03T11:34:59.403989847+01:00"
     description: A Helm chart for Quarkus REST Server on OpenShift
-    digest: c94e775c95996e6eab5526e4f3def48245dd05253bd1b8eac7b4e4aa756a7fba
+    digest: e42aa2046da037cf429690d409b50cc53538f25fe664ddace944107101c2c3a5
     keywords:
     - quarkus
     - rest
@@ -113,4 +113,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/quarkus-rest-server-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-03T10:59:40.820782+01:00"
+generated: "2025-12-03T11:34:59.397962859+01:00"
