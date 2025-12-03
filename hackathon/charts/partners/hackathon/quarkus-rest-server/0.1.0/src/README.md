@@ -66,7 +66,7 @@ oc get route <restServer.name> -o jsonpath='{.spec.host}'
 ```
 
 Access the following endpoints:
-- OpenAPI: `https://<route-url>/q/openapi`
+- OpenAPI: `https://<route-url>/openapi`
 - Swagger UI: `https://<route-url>/q/swagger-ui`
 - Health: `https://<route-url>/q/health`
 - Fruits API: `https://<route-url>/fruits`

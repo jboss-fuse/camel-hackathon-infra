@@ -12,12 +12,12 @@ This repository contains infrastructure resources for the 2025 December Camel Ha
 
 The repository supports two parallel deployment methods:
 
-1. **Direct YAML Manifests** (in `activemq/`, `postgres/`, `observability/`, `fhir/`, `quarkus-rest/`, `quarkus-cxf/`): Custom Resource definitions or standard Kubernetes resources that can be applied directly with `oc create -f` or `oc apply -f`
+1. **Direct YAML Manifests** (in `activemq/`, `postgres/`, `observability/`, `fhir/`, `quarkus-rest/`, `quarkus-cxf/`, `hawtio/`): Custom Resource definitions or standard Kubernetes resources that can be applied directly with `oc create -f` or `oc apply -f`
 2. **Helm Charts** (in `hackathon/`): Packaged Helm charts that wrap the same CRDs for deployment via Helm or OpenShift Developer Console
 
 ### Service Components
 
-Seven core services are provided:
+Eight core services are provided:
 
 - **ActiveMQ Artemis Broker**: Message broker using AMQ Broker Operator
   - Direct manifest: `activemq/broker.yaml`
@@ -63,6 +63,13 @@ Seven core services are provided:
   - Provides: Hello, Fruit, Faulty, Slow, MTOM SOAP services
   - Base path: `/soap`, Port: 8080, WSDLs: `?wsdl` on each endpoint
 
+- **Hawtio Online**: Web-based management console for Java applications using Hawtio Operator
+  - Direct manifest: `hawtio/hawtio.yaml`
+  - Helm chart: `hackathon/hawtio-0.1.0.tgz`
+  - Creates `Hawtio` custom resource (API: `hawt.io/v1`)
+  - Deployment modes: `cluster` (multi-namespace) or `namespace` (single namespace)
+  - Provides JMX/Jolokia management, Camel integration, OAuth authentication
+
 ### Helm Repository Structure
 
 The `hackathon/` directory serves as a Helm repository compatible with OpenShift's HelmChartRepository:
@@ -77,13 +84,15 @@ hackathon/
 ├── fhir-0.1.0.tgz
 ├── quarkus-rest-server-0.1.0.tgz
 ├── quarkus-cxf-server-0.1.0.tgz
+├── hawtio-0.1.0.tgz
 └── charts/partners/hackathon/          # Chart sources
     ├── activemq-artemis/0.1.0/src/
     ├── postgres-cluster/0.1.0/src/
     ├── opentelemetry-infra/0.1.0/src/
     ├── fhir/0.1.0/src/
     ├── quarkus-rest-server/0.1.0/src/
-    └── quarkus-cxf-server/0.1.0/src/
+    ├── quarkus-cxf-server/0.1.0/src/
+    └── hawtio/0.1.0/src/
 ```
 
 Each chart source contains:
@@ -124,6 +133,9 @@ oc create -f quarkus-rest/quarkus-rest-server.yaml
 
 # Quarkus CXF Server
 oc create -f quarkus-cxf/quarkus-cxf-server.yaml
+
+# Hawtio (requires Hawtio Operator)
+oc create -f hawtio/hawtio.yaml
 ```
 
 ### Helm Chart Deployment
@@ -155,6 +167,9 @@ helm install rest-server hackathon/quarkus-rest-server -n <namespace>
 
 # Quarkus CXF Server
 helm install cxf-server hackathon/quarkus-cxf-server -n <namespace>
+
+# Hawtio
+helm install hawtio hackathon/hawtio -n <namespace>
 ```
 
 Customize instance names:
@@ -166,6 +181,7 @@ helm install my-otel hackathon/opentelemetry-infra --set tempo.name=my-tempo --s
 helm install my-fhir hackathon/fhir --set fhir.name=my-fhir-server -n <namespace>
 helm install my-rest hackathon/quarkus-rest-server --set restServer.name=my-quarkus-rest -n <namespace>
 helm install my-cxf hackathon/quarkus-cxf-server --set cxfServer.name=my-quarkus-cxf -n <namespace>
+helm install my-hawtio hackathon/hawtio --set hawtio.name=my-hawtio --set hawtio.type=namespace -n <namespace>
 ```
 
 FHIR-specific customization:
@@ -286,7 +302,7 @@ oc logs job/otel-post-install -n <namespace>
 ROUTE_URL=$(oc get route quarkus-rest-server -o jsonpath='{.spec.host}')
 
 # Access OpenAPI spec
-curl https://$ROUTE_URL/q/openapi
+curl https://$ROUTE_URL/openapi
 
 # Access Swagger UI in browser
 echo "Swagger UI: https://$ROUTE_URL/q/swagger-ui"
@@ -344,6 +360,32 @@ curl -X POST https://$ROUTE_URL/soap/fruits \
 </soapenv:Envelope>'
 ```
 
+**Hawtio**: Access management console and manage applications
+
+```bash
+# Get route URL
+HAWTIO_URL=$(oc get hawtio hawtio-online -o jsonpath='{.status.URL}' -n <namespace>)
+echo "Hawtio Console: $HAWTIO_URL"
+
+# Or get route directly
+oc get route -l app=hawtio -n <namespace>
+
+# Check Hawtio status
+oc get hawtio hawtio-online -n <namespace>
+
+# Scale Hawtio
+kubectl scale hawtio hawtio-online --replicas=3 -n <namespace>
+
+# View Hawtio pods
+oc get pods -l app=hawtio -n <namespace>
+
+# View Hawtio logs
+oc logs -l app=hawtio -n <namespace>
+
+# Switch to namespace mode
+kubectl patch hawtio hawtio-online --type='merge' -p '{"spec":{"type":"namespace"}}' -n <namespace>
+```
+
 ## Prerequisites
 
 The following services require operators to be installed before deployment:
@@ -352,6 +394,7 @@ The following services require operators to be installed before deployment:
 2. **Crunchy Data PostgreSQL Operator** (for PostgreSQL)
 3. **Tempo Operator** (for Tempo and OpenTelemetry Infrastructure)
 4. **OpenTelemetry Operator** (for full OpenTelemetry Infrastructure stack only)
+5. **Hawtio Operator** (for Hawtio Online)
 
 Install operators via OpenShift OperatorHub or using operator subscriptions.
 
@@ -411,7 +454,7 @@ Install operators via OpenShift OperatorHub or using operator subscriptions.
 - Framework: Quarkus 3.30.0
 - Port: 8080
 - Health endpoints: `/q/health/live`, `/q/health/ready`
-- OpenAPI spec: `/q/openapi`
+- OpenAPI spec: `/openapi`
 - Swagger UI: `/q/swagger-ui`
 - Resource limits: 2Gi memory, 1000m CPU
 - Resource requests: 512Mi memory, 250m CPU
@@ -433,6 +476,21 @@ Install operators via OpenShift OperatorHub or using operator subscriptions.
   - MtomService: `/soap/mtom?wsdl`
 - Image: `quay.io/fuse_qe/quarkus-cxf-server:1.0.0`
 - Pretty-print logging enabled for HelloService and FruitService
+
+**Hawtio** (`hawtio/hawtio.yaml`):
+- Deployment type: `cluster` (can manage apps across all accessible namespaces)
+- Replicas: 1
+- Resource limits: 1 CPU, 200Mi memory
+- Resource requests: 200m CPU, 32Mi memory
+- OAuth integration enabled
+- Auto-generated route hostname (can be customized)
+- Features:
+  - JMX/Jolokia management console
+  - Apache Camel integration and debugging
+  - Application discovery across namespaces (cluster mode) or single namespace
+  - Web-based monitoring and management
+  - Custom TLS certificate support
+  - External routes annotation support
 
 ## Modifying Charts
 

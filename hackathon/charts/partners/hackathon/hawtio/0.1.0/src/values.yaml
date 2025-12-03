@@ -1,0 +1,44 @@
+# Default values for hawtio chart
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+hawtio:
+  # Name of the Hawtio instance
+  name: hawtio-online
+
+  # Deployment type: "Cluster" or "Namespace"
+  # - Cluster: Hawtio can discover and manage applications across all namespaces
+  #   the authenticated user has access to
+  # - Namespace: Hawtio can discover and manage applications only within the
+  #   deployment namespace
+  type: Cluster
+
+  # Number of desired replicas
+  replicas: 1
+
+  # Route hostname (optional)
+  # If not specified, it will be auto-generated
+  # routeHostName: hawtio-online.example.com
+
+  # Compute resources required by the deployment
+  resources:
+    limits:
+      cpu: "1"
+      memory: 200Mi
+    requests:
+      cpu: 200m
+      memory: 32Mi
+
+  # Custom TLS certificate configuration (optional)
+  # route:
+  #   certSecret:
+  #     name: route-custom-cert
+  #   caCert:
+  #     name: route-ca-cert
+  #     key: tls.crt
+
+  # External routes (optional)
+  # List of additional routes to annotate in the service account
+  # externalRoutes:
+  #   - second-route
+  #   - third-route

@@ -1,0 +1,17 @@
+apiVersion: hawt.io/v2
+kind: Hawtio
+metadata:
+  name: hawtio-online
+spec:
+  # Deployment type: "Cluster" allows managing apps across all namespaces
+  type: Cluster
+  # Number of replicas
+  replicas: 1
+  # Compute resources
+  resources:
+    limits:
+      cpu: "1"
+      memory: 200Mi
+    requests:
+      cpu: 200m
+      memory: 32Mi
