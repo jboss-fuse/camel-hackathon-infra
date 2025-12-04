@@ -1,0 +1,6 @@
+needs to create registry credential secret
+
+oc create secret generic threescale-registry-auth \
+  --from-file=.dockerconfigjson=/tmp/config.json \
+  --type=kubernetes.io/dockerconfigjson \
+  -n 3scale
