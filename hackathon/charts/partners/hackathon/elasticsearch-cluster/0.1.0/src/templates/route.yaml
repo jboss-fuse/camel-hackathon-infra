@@ -1,0 +1,12 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ printf "%s-es" (.Values.elasticsearch.name | default "hackathon") }}
+spec:
+  to:
+    kind: Service
+    name: {{ printf "%s-es-default" (.Values.elasticsearch.name | default "hackathon") }}
+    weight: 100
+  port:
+    targetPort: http
+  wildcardPolicy: None

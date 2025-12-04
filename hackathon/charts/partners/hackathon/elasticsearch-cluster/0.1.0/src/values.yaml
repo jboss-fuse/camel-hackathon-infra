@@ -1,0 +1,19 @@
+# Default values for elasticsearch-cluster
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+elasticsearch:
+  # Name of the Elasticsearch cluster
+  name: hackathon
+  # Elasticsearch version
+  version: 9.2.0
+  # Number of nodes in the cluster
+  nodeCount: 1
+  # Resource requests and limits
+  resources:
+    requests:
+      memory: 4Gi
+      cpu: "1"
+    limits:
+      memory: 4Gi
+      cpu: "2"

@@ -1,0 +1,34 @@
+apiVersion: elasticsearch.k8s.elastic.co/v1
+kind: Elasticsearch
+metadata:
+  name: {{ .Values.elasticsearch.name | default "hackathon" }}
+spec:
+  http:
+    tls:
+      selfSignedCertificate:
+        disabled: true
+  nodeSets:
+    - config:
+        node.roles:
+          - master
+          - data
+        node.attr.attr_name: attr_value
+        node.store.allow_mmap: false
+      podTemplate:
+        metadata:
+          labels:
+            foo: bar
+        spec:
+          containers:
+            - name: elasticsearch
+              resources:
+                requests:
+                  memory: {{ .Values.elasticsearch.resources.requests.memory | default "4Gi" }}
+                  cpu: {{ .Values.elasticsearch.resources.requests.cpu | default "1" }}
+                limits:
+                  memory: {{ .Values.elasticsearch.resources.limits.memory | default "4Gi" }}
+                  cpu: {{ .Values.elasticsearch.resources.limits.cpu | default "2" }}
+      name: default
+      count: {{ .Values.elasticsearch.nodeCount | default 1 }}
+  version: {{ .Values.elasticsearch.version | default "9.2.0" }}
+  volumeClaimDeletePolicy: DeleteOnScaledownAndClusterDeletion

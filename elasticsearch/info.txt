@@ -1,0 +1,9 @@
+to retrieve the password:
+
+oc get secret [name of the cluster]-es-elastic-user -o jsonpath='{.data.elastic}' | base64 -d
+
+i.e.
+
+oc get secret hackathon-es-elastic-user -o jsonpath='{.data.elastic}' | base64 -d
+
+the username is always "elastic"

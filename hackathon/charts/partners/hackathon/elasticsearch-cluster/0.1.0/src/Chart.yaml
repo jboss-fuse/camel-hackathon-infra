@@ -1,0 +1,14 @@
+apiVersion: v2
+name: elasticsearch-cluster
+description: A Helm chart for Elasticsearch cluster using Elastic Cloud on Kubernetes (ECK) Operator on OpenShift
+type: application
+version: 0.1.0
+appVersion: "9.2.0"
+keywords:
+  - elasticsearch
+  - elastic
+  - search
+  - eck
+  - logging
+maintainers:
+  - name: Hackathon Team
