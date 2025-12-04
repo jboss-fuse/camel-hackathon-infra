@@ -11,4 +11,4 @@ spec:
       path: /metrics
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ .Values.otelCollector.name | default "otel-collector" }}
+      app.kubernetes.io/name: {{ printf "%s-collector" (.Values.otelCollector.name | default "otel-collector") }}
