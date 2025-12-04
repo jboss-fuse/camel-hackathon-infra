@@ -4,7 +4,7 @@
 
 tempo:
   # Name of the Tempo Monolithic instance
-  name: monolitic
+  name: monolithic
 
 serviceAccount:
   # Name of the ServiceAccount for OTel Collector

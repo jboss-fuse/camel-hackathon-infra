@@ -14,7 +14,7 @@ spec:
       otlp/tempo:
         auth:
           authenticator: bearertokenauth
-        endpoint: {{ printf "tempo-%s-gateway:4317" (.Values.tempo.name | default "monolitic") | quote }}
+        endpoint: {{ printf "tempo-%s-gateway:4317" (.Values.tempo.name | default "monolithic") | quote }}
         headers:
           X-Scope-OrgID: {{ .Values.otelCollector.tenantId | default "application" }}
         tls:
