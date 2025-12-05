@@ -31,7 +31,7 @@ minio:
   service:
     type: ClusterIP
     apiPort: 9000
-    webuiPort: 36491
+    webuiPort: 9001
 
   # Route configuration (OpenShift specific)
   route:

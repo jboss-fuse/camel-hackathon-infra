@@ -42,7 +42,7 @@ spec:
       protocol: TCP
       name: api
     - port: {{ .Values.minio.service.webuiPort }}
-      targetPort: 36491
+      targetPort: {{ .Values.minio.service.webuiPort }}
       protocol: TCP
       name: webui
   selector:
@@ -82,6 +82,8 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.minio.name }}-credentials
                   key: MINIO_SECRET_KEY
+            - name: MINIO_CONSOLE_PORT_NUMBER
+              value: "{{ .Values.minio.service.webuiPort }}"
           ports:
             - containerPort: 9000
               protocol: TCP
