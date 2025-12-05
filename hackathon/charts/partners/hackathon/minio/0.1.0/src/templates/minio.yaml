@@ -82,8 +82,8 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.minio.name }}-credentials
                   key: MINIO_SECRET_KEY
-            - name: MINIO_CONSOLE_PORT_NUMBER
-              value: "{{ .Values.minio.service.webuiPort }}"
+            - name: MINIO_CONSOLE_ADDRESS
+              value: ":{{ .Values.minio.service.webuiPort }}"
           ports:
             - containerPort: 9000
               protocol: TCP
