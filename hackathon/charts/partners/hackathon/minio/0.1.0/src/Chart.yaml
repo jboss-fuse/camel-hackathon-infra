@@ -1,0 +1,13 @@
+apiVersion: v2
+name: minio
+description: A Helm chart for MinIO object storage on OpenShift
+type: application
+version: 0.1.0
+appVersion: "latest"
+keywords:
+  - minio
+  - storage
+  - object-storage
+  - s3
+maintainers:
+  - name: Hackathon Team
