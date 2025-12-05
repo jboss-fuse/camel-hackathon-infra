@@ -124,4 +124,22 @@ spec:
     termination: edge
     insecureEdgeTerminationPolicy: Redirect
   {{- end }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Values.minio.name }}-api
+  labels:
+    app: {{ .Values.minio.name }}
+spec:
+  to:
+    kind: Service
+    name: {{ .Values.minio.name }}
+  port:
+    targetPort: api
+  {{- if .Values.minio.route.tls.enabled }}
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  {{- end }}
 {{- end }}

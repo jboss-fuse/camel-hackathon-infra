@@ -3,7 +3,7 @@ entries:
   activemq-artemis:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-05T11:44:59.230937752+01:00"
+    created: "2025-12-05T12:06:49.146927652+01:00"
     description: A Helm chart for ActiveMQ Artemis Broker on OpenShift
     digest: a8d3d090342834ea60848716daaf1102f2ce5aa283a64e32efd2b47cf48a30cd
     keywords:
@@ -21,7 +21,7 @@ entries:
   apicurio-registry:
   - apiVersion: v2
     appVersion: 2.6.13
-    created: "2025-12-05T11:44:59.231570302+01:00"
+    created: "2025-12-05T12:06:49.14734639+01:00"
     dependencies:
     - condition: postgresql.enabled
       name: postgres-cluster
@@ -45,7 +45,7 @@ entries:
   elasticsearch-cluster:
   - apiVersion: v2
     appVersion: 9.2.0
-    created: "2025-12-05T11:44:59.231849976+01:00"
+    created: "2025-12-05T12:06:49.147520653+01:00"
     description: A Helm chart for Elasticsearch cluster using Elastic Cloud on Kubernetes
       (ECK) Operator on OpenShift
     digest: 78e87b66c197f6afcb04dd58135c1e7093b2b48b18e66241b532c37cab4e4c98
@@ -65,7 +65,7 @@ entries:
   fhir:
   - apiVersion: v2
     appVersion: 8.2.0
-    created: "2025-12-05T11:44:59.232149025+01:00"
+    created: "2025-12-05T12:06:49.147719378+01:00"
     description: A Helm chart for HAPI FHIR Server on OpenShift
     digest: e80a7e28c566a33a5c746804e77a7cc53d7bf55eb903dffd6e574a49d7ce3c5b
     keywords:
@@ -83,7 +83,7 @@ entries:
   ftp:
   - apiVersion: v2
     appVersion: latest
-    created: "2025-12-05T11:44:59.23244347+01:00"
+    created: "2025-12-05T12:06:49.147958544+01:00"
     description: A Helm chart for Apache FTP Server on OpenShift
     digest: 23472da73cdba36824e96cfd46b22f088434b821cc1eccc27eefc59211af2052
     keywords:
@@ -100,7 +100,7 @@ entries:
   hawtio:
   - apiVersion: v2
     appVersion: 2.1.0
-    created: "2025-12-05T11:44:59.232688726+01:00"
+    created: "2025-12-05T12:06:49.148152014+01:00"
     description: A Helm chart for deploying Hawtio Online via the Hawtio Operator
     digest: 629d5ccdeeedc55ea7e18207ea7e210aa3352f4e93af9b12dfdb087530e574c7
     home: https://hawt.io
@@ -123,7 +123,7 @@ entries:
   ibm-mq:
   - apiVersion: v2
     appVersion: 9.4.4.0-r3
-    created: "2025-12-05T11:44:59.232953594+01:00"
+    created: "2025-12-05T12:06:49.148340762+01:00"
     description: IBM MQ Queue Manager for the Camel Hackathon
     digest: 7d3ccf3f14ebd416b07baaaba3f0312c8a63d74734b55182dcaf89fecc7db4d9
     name: ibm-mq
@@ -134,9 +134,9 @@ entries:
   minio:
   - apiVersion: v2
     appVersion: latest
-    created: "2025-12-05T11:44:59.233220622+01:00"
+    created: "2025-12-05T12:06:49.14892791+01:00"
     description: A Helm chart for MinIO object storage on OpenShift
-    digest: 9865a665cde47c2b506f24ffaea955e01a0ce7a62719027ca7ea5580f64a282e
+    digest: 19edb08a1d69ea5660f9b8fd282cd3fd84ae6071c17038045da5872e6da537f3
     keywords:
     - minio
     - storage
@@ -152,7 +152,7 @@ entries:
   opentelemetry-infra:
   - apiVersion: v2
     appVersion: "1.0"
-    created: "2025-12-05T11:44:59.233604858+01:00"
+    created: "2025-12-05T12:06:49.149325466+01:00"
     description: A Helm chart for OpenTelemetry stack on OpenShift
     digest: 29e6d8703a73c6c6d19533f7503b054da47549f32e943db2ec91086251bd643e
     keywords:
@@ -172,7 +172,7 @@ entries:
   postgres-cluster:
   - apiVersion: v2
     appVersion: "17"
-    created: "2025-12-05T11:44:59.233775882+01:00"
+    created: "2025-12-05T12:06:49.149480994+01:00"
     description: A Helm chart for PostgreSQL Cluster using Crunchy Data Operator on
       OpenShift
     digest: c019d7fd7903c1eab3d8cbf7fef0cf30291164a45490e0e62cd2973bfb208bad
@@ -191,7 +191,7 @@ entries:
   qdrant:
   - apiVersion: v2
     appVersion: 1.15.1
-    created: "2025-12-05T11:44:59.234009432+01:00"
+    created: "2025-12-05T12:06:49.149681808+01:00"
     description: A Helm chart for deploying Qdrant vector database on OpenShift
     digest: 7e9d930d9191a1e5d53cd20a75f8b7f328ec695e603aa54cb92a0f8b832ee6d2
     home: https://qdrant.tech/
@@ -212,7 +212,7 @@ entries:
   quarkus-cxf-server:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-05T11:44:59.234276577+01:00"
+    created: "2025-12-05T12:06:49.149905488+01:00"
     description: A Helm chart for Quarkus CXF SOAP Server on OpenShift
     digest: ea1d0c373fd67e412170e8d5854b38f7c86c493ed3fdba8ae07d35f9f4d8bb7d
     keywords:
@@ -231,7 +231,7 @@ entries:
   quarkus-rest-server:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-05T11:44:59.234544233+01:00"
+    created: "2025-12-05T12:06:49.150114019+01:00"
     description: A Helm chart for Quarkus REST Server on OpenShift
     digest: 04599c4e8e005211c46508d110787de06a2efbbeeeaaddc1e982f2a50f322f2f
     keywords:
@@ -250,7 +250,7 @@ entries:
   strimzi-cluster:
   - apiVersion: v2
     appVersion: 3.9.0
-    created: "2025-12-05T11:44:59.234739555+01:00"
+    created: "2025-12-05T12:06:49.15024973+01:00"
     description: A Helm chart for Kafka cluster using Strimzi Operator on OpenShift
     digest: 8f556a0d86b22dffbb0e2cb91ab614d034b5765cec1e7cc44af0a8ff73e565e2
     keywords:
@@ -266,4 +266,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/jboss-fuse/camel-hackathon-infra/refs/heads/main/hackathon/strimzi-cluster-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-05T11:44:59.230334858+01:00"
+generated: "2025-12-05T12:06:49.146707981+01:00"
